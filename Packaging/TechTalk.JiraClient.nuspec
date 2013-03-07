@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>TechTalk.JiraClient</id>
+    <version>1.0.0</version>
+    <title>JIRA REST Client</title>
+    <authors>TechTalk</authors>
+    <owners></owners>
+    <description>Simple client for Atlassian JIRA service REST API</description>
+    <releaseNotes></releaseNotes>
+    <summary></summary>
+    <language>en-US</language>
+    <projectUrl>https://github.com/techtalk/TechTalk.JiraClient</projectUrl>
+    <iconUrl></iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl></licenseUrl>
+    <copyright>Copyright © TechTalk 2013</copyright>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <dependencies>
+        <group targetFramework="net40-Client">
+          <dependency id="RestSharp" version="104.1" />
+          <dependency id="Newtonsoft.Json" version="4.5.11" />
+        </group>
+    </dependencies>
+    <references></references>
+    <tags></tags>
+  </metadata>
+  <files>
+      <file src="content\" target="content" />
+      <file src="lib\" target="lib" />
+      <file src="tools\" target="tools" />
+  </files>
+</package>
