@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
     <metadata>
         <id>TechTalk.JiraRestClient</id>
@@ -10,9 +10,9 @@
         <releaseNotes></releaseNotes>
         <summary></summary>
         <language>en-US</language>
-        <projectUrl>https://github.com/techtalk/TechTalk.JiraRestClient</projectUrl>
-        <iconUrl>https://github.com/techtalk/TechTalk.JiraRestClient/PackageIcon.ico</iconUrl>
-        <licenseUrl>https://github.com/techtalk/TechTalk.JiraRestClient/Licence.txt</licenseUrl>
+        <projectUrl>https://github.com/techtalk/JiraRestClient</projectUrl>
+        <iconUrl>https://github.com/techtalk/JiraRestClient/PackageIcon.ico</iconUrl>
+        <licenseUrl>https://github.com/techtalk/JiraRestClient/Licence.txt</licenseUrl>
         <copyright>Copyright © TechTalk 2013</copyright>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
