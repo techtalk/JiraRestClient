@@ -11,8 +11,8 @@
         <summary></summary>
         <language>en-US</language>
         <projectUrl>https://github.com/techtalk/JiraRestClient</projectUrl>
-        <iconUrl>https://github.com/techtalk/JiraRestClient/PackageIcon.png</iconUrl>
-        <licenseUrl>https://github.com/techtalk/JiraRestClient/Licence.txt</licenseUrl>
+        <iconUrl>https://raw.github.com/techtalk/JiraRestClient/master/PackageIcon.png</iconUrl>
+        <licenseUrl>https://raw.github.com/techtalk/JiraRestClient/master/Licence.txt</licenseUrl>
         <copyright>Copyright © TechTalk 2013</copyright>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
