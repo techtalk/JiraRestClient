@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace JiraConsoleApp.Jira
+namespace TechTalk.JiraRestClient
 {
     public interface IJiraClient
     {

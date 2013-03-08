@@ -4,3 +4,4 @@ packages/
 *.user
 *.suo
 *.log
+*.nupkg

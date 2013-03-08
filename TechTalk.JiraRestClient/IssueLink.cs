@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JiraConsoleApp.Jira
+namespace TechTalk.JiraRestClient
 {
     public class IssueLink
     {

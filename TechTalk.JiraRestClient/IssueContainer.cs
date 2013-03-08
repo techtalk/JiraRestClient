@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace JiraConsoleApp.Jira
+namespace TechTalk.JiraRestClient
 {
     public class IssueContainer
     {

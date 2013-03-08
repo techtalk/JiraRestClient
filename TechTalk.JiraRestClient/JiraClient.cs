@@ -8,7 +8,7 @@ using System.Text;
 using Newtonsoft.Json;
 using RestSharp;
 
-namespace JiraConsoleApp.Jira
+namespace TechTalk.JiraRestClient
 {
     public class JiraClient : IJiraClient
     {
