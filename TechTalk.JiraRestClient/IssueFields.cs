@@ -13,9 +13,6 @@ namespace TechTalk.JiraRestClient
             comments = new List<Comment>();
             issuelinks = new List<IssueLink>();
             attachment = new List<Attachment>();
-
-            project = new Dictionary<String, Object>();
-            issuetype = new Dictionary<String, Object>();
         }
 
         public String summary { get; set; }
@@ -26,8 +23,5 @@ namespace TechTalk.JiraRestClient
         public List<Comment> comments { get; set; }
         public List<IssueLink> issuelinks { get; set; }
         public List<Attachment> attachment { get; set; }
-
-        public Dictionary<String, Object> project { get; set; }
-        public Dictionary<String, Object> issuetype { get; set; }
     }
 }
