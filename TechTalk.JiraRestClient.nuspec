@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0"?>
-<package >
+<package>
     <metadata>
         <id>TechTalk.JiraRestClient</id>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
         <title>JIRA REST Client</title>
         <authors>TechTalk</authors>
         <owners></owners>
@@ -17,7 +17,6 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <dependency id="RestSharp" version="[104.1,)" />
-            <dependency id="Newtonsoft.Json" version="[4.5.11,)" />
         </dependencies>
         <frameworkAssemblies>
             <frameworkAssembly assemblyName="System" targetFramework="net40-Client" />

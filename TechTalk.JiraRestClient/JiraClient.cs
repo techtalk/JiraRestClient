@@ -5,8 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Deserializers;
 
 namespace TechTalk.JiraRestClient
 {
@@ -15,10 +15,12 @@ namespace TechTalk.JiraRestClient
         private readonly string username;
         private readonly string password;
         private readonly RestClient client;
+        private readonly JsonDeserializer deserializer;
         public JiraClient(string baseUrl, string username, string password)
         {
             this.username = username;
             this.password = password;
+            deserializer = new JsonDeserializer();
             client = new RestClient { BaseUrl = baseUrl + (baseUrl.EndsWith("/") ? "" : "/") + "rest/api/2/" };
         }
 
@@ -49,7 +51,7 @@ namespace TechTalk.JiraRestClient
                     var response = client.Execute(request);
                     AssertStatus(response, HttpStatusCode.OK);
 
-                    var data = JsonConvert.DeserializeObject<IssueContainer>(response.Content);
+                    var data = deserializer.Deserialize<IssueContainer>(response);
                     result.AddRange(data.issues ?? Enumerable.Empty<Issue>());
 
                     if (result.Count < data.total) continue;
@@ -82,7 +84,7 @@ namespace TechTalk.JiraRestClient
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.OK);
 
-                var issue = JsonConvert.DeserializeObject<Issue>(response.Content);
+                var issue = deserializer.Deserialize<Issue>(response);
                 issue.fields.comments = GetComments(issue).ToList();
                 issue.ExpandLinks(issue);
                 return issue;
@@ -113,7 +115,7 @@ namespace TechTalk.JiraRestClient
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.Created);
 
-                return JsonConvert.DeserializeObject<Issue>(response.Content);
+                return deserializer.Deserialize<Issue>(response);
             }
             catch (Exception ex)
             {
@@ -183,7 +185,7 @@ namespace TechTalk.JiraRestClient
                     var response = client.Execute(request);
                     AssertStatus(response, HttpStatusCode.OK);
 
-                    var data = JsonConvert.DeserializeObject<CommentsContainer>(response.Content);
+                    var data = deserializer.Deserialize<CommentsContainer>(response);
                     result.AddRange(data.comments ?? Enumerable.Empty<Comment>());
 
                     if (result.Count < data.total) continue;
@@ -210,7 +212,7 @@ namespace TechTalk.JiraRestClient
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.Created);
 
-                return JsonConvert.DeserializeObject<Comment>(response.Content);
+                return deserializer.Deserialize<Comment>(response);
             }
             catch (Exception ex)
             {
@@ -255,7 +257,7 @@ namespace TechTalk.JiraRestClient
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.OK);
 
-                return JsonConvert.DeserializeObject<Attachment[]>(response.Content).Single();
+                return deserializer.Deserialize<List<Attachment>>(response).Single();
             }
             catch (Exception ex)
             {
