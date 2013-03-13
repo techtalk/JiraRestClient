@@ -131,16 +131,18 @@ namespace TechTalk.JiraRestClient
                 var path = String.Format("issue/{0}", issue.id);
                 var request = CreateRequest(Method.PUT, path);
                 request.AddHeader("ContentType", "application/json");
-                request.AddBody(new
-                {
-                    update = new
-                    {
-                        summary = new[] { new { set = issue.fields.summary } },
-                        description = new[] { new { set = issue.fields.description } },
-                        labels = new[] { new { set = issue.fields.labels } },
-                        timetracking = new[] { new { set = new { originalEstimate = issue.fields.timetracking.originalEstimate } } }
-                    }
-                });
+
+                var update = new Dictionary<string, object>();
+                if (issue.fields.summary != null)
+                    update.Add("summary", new[] { new { set = issue.fields.summary } });
+                if (issue.fields.description != null)
+                    update.Add("description", new[] { new { set = issue.fields.description } });
+                if (issue.fields.labels != null)
+                    update.Add("labels", new[] { new { set = issue.fields.labels } });
+                if (issue.fields.timetracking != null)
+                    update.Add("timetracking", new[] { new { set = new { originalEstimate = issue.fields.timetracking.originalEstimate } } });
+
+                request.AddBody(new { update = update });
 
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.NoContent);
