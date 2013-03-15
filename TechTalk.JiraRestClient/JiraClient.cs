@@ -40,12 +40,20 @@ namespace TechTalk.JiraRestClient
 
         public IEnumerable<Issue> GetIssues(String projectKey)
         {
+            return GetIssues(projectKey, null);
+        }
+
+        public IEnumerable<Issue> GetIssues(String projectKey, String issueType)
+        {
             try
             {
                 var result = new List<Issue>(4);
                 while (true)
                 {
-                    var path = String.Format("search?jql=project={0}&startAt={1}&maxResults={2}", WebUtility.HtmlEncode(projectKey), result.Count, result.Capacity);
+                    var jql = String.Format("project={0}", WebUtility.HtmlEncode(projectKey));
+                    if (!String.IsNullOrEmpty(issueType))
+                        jql += String.Format(" AND issueType={0}", WebUtility.HtmlEncode(issueType));
+                    var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, result.Count, result.Capacity);
                     var request = CreateRequest(Method.GET, path);
 
                     var response = client.Execute(request);
@@ -96,7 +104,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public Issue CreateIssue(String projectKey, String typeCode, String summary)
+        public Issue CreateIssue(String projectKey, String issueType, String summary)
         {
             try
             {
@@ -107,7 +115,7 @@ namespace TechTalk.JiraRestClient
                     fields = new
                     {
                         project = new { key = projectKey },
-                        issuetype = new { name = typeCode },
+                        issuetype = new { name = issueType },
                         summary = summary
                     }
                 });

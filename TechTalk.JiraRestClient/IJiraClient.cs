@@ -6,40 +6,42 @@ namespace TechTalk.JiraRestClient
 {
     public interface IJiraClient
     {
-        /// <summary>Returns all issues for the given JIRA project</summary>
+        /// <summary>Returns all issues for the given project</summary>
         IEnumerable<Issue> GetIssues(String projectKey);
+        /// <summary>Returns all issues of the specified type for the given project</summary>
+        IEnumerable<Issue> GetIssues(String projectKey, String issueType);
         /// <summary>Returns the issue identified by the given ref</summary>
         Issue LoadIssue(String issueRef);
         /// <summary>Returns the issue identified by the given ref</summary>
         Issue LoadIssue(IssueRef issueRef);
-        /// <summary>Creates an issue (of the given type) for the given JIRA project</summary>
-        Issue CreateIssue(String projectKey, String typeCode, String summary);
-        /// <summary>Updates the given JIRA issue on the remote system</summary>
+        /// <summary>Creates an issue of the specified type for the given project</summary>
+        Issue CreateIssue(String projectKey, String issueType, String summary);
+        /// <summary>Updates the given issue on the remote system</summary>
         Issue UpdateIssue(Issue issue);
-        /// <summary>Deletes the given JIRA issue from the remote system</summary>
+        /// <summary>Deletes the given issue from the remote system</summary>
         void DeleteIssue(IssueRef issue);
 
-        /// <summary>Returns all comments for the given JIRA issue</summary>
+        /// <summary>Returns all comments for the given issue</summary>
         IEnumerable<Comment> GetComments(IssueRef issue);
-        /// <summary>Adds a comment to the given JIRA issue</summary>
+        /// <summary>Adds a comment to the given issue</summary>
         Comment CreateComment(IssueRef issue, String comment);
         /// <summary>Deletes the given comment</summary>
         void DeleteComment(IssueRef issue, Comment comment);
 
-        /// <summary>Return all attachments for the given JIRA issue</summary>
+        /// <summary>Return all attachments for the given issue</summary>
         IEnumerable<Attachment> GetAttachments(IssueRef issue);
-        /// <summary>Creates an attachment to the given JIRA issue</summary>
+        /// <summary>Creates an attachment to the given issue</summary>
         Attachment CreateAttachment(IssueRef issue, Stream stream, String fileName);
         /// <summary>Deletes the given attachment</summary>
         void DeleteAttachment(Attachment attachment);
 
-        /// <summary>Returns all links for the given JIRA issue</summary>
+        /// <summary>Returns all links for the given issue</summary>
         IEnumerable<IssueLink> GetIssueLinks(IssueRef issue);
-        /// <summary>Returns the link between two JIRA issues of the given relation</summary>
+        /// <summary>Returns the link between two issues of the given relation</summary>
         IssueLink LoadIssueLink(IssueRef parent, IssueRef child, String relationship);
-        /// <summary>Creates a link between two JIRA issues with the given relation</summary>
+        /// <summary>Creates a link between two issues with the given relation</summary>
         IssueLink CreateIssueLink(IssueRef parent, IssueRef child, String relationship);
-        /// <summary>Removes the given link of two JIRA issues</summary>
+        /// <summary>Removes the given link of two issues</summary>
         void DeleteIssueLink(IssueLink link);
     }
 }

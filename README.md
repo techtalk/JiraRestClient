@@ -32,3 +32,6 @@ fixed the bug introduced in 1.0.1
 
 **1.0.3**
 fields set to null are not updated
+
+**1.0.4**
+list issues of a given type within a project
