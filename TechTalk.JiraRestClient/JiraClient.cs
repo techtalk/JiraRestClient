@@ -33,8 +33,10 @@ namespace TechTalk.JiraRestClient
 
         private void AssertStatus(IRestResponse response, HttpStatusCode status)
         {
+            if (response.ErrorException != null)
+                throw new JiraClientException("Transport level error: " + response.ErrorMessage, response.ErrorException);
             if (response.StatusCode != status)
-                throw new JiraClientException("JIRA returned wrong status: " + response.StatusDescription);
+                throw new JiraClientException("JIRA returned wrong status: " + response.StatusDescription, response.Content);
         }
 
 
