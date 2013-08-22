@@ -7,6 +7,8 @@ namespace TechTalk.JiraRestClient
         public string id { get; set; }
         public string name { get; set; }
 
+        public Status to { get; set; }
+
         public object fields { get; set; }
     }
 }

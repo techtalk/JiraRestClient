@@ -13,9 +13,10 @@ Available on NuGet as [TechTalk.JiraRestClient](http://nuget.org/packages/TechTa
     - description
     - labels
     - original estimate
-4. List, create and delete comments
-5. List, create and delete attachments
-6. List, create and delete issue links
+4. Query and apply state transitions 
+5. List, create and delete comments
+6. List, create and delete attachments
+7. List, create and delete issue links
 
 --------------------------------------------------
 
