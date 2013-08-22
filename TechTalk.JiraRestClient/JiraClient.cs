@@ -184,6 +184,54 @@ namespace TechTalk.JiraRestClient
         }
 
 
+        public IEnumerable<Transition> GetTransitions(IssueRef issue)
+        {
+            try
+            {
+                var path = String.Format("issue/{0}/transitions?expand=transitions.fields", issue.id);
+                var request = CreateRequest(Method.GET, path);
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<TransitionsContainer>(response);
+                return data.transitions;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("UpdateIssue(issue) error: {0}", ex);
+                throw new JiraClientException("Could not update issue", ex);
+            }
+        }
+
+        public Issue TransitionIssue(IssueRef issue, Transition transition)
+        {
+            try
+            {
+                var path = String.Format("issue/{0}/transitions", issue.id);
+                var request = CreateRequest(Method.POST, path);
+                request.AddHeader("ContentType", "application/json");
+
+                var update = new Dictionary<string, object>();
+                update.Add("transition", new { id = transition.id });
+                if (transition.fields != null)
+                    update.Add("fields", transition.fields);
+
+                request.AddBody(update);
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.NoContent);
+
+                return LoadIssue(issue);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("UpdateIssue(issue) error: {0}", ex);
+                throw new JiraClientException("Could not update issue", ex);
+            }
+        }
+
+
         public IEnumerable<Comment> GetComments(IssueRef issue)
         {
             try

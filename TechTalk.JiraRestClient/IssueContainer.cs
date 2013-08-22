@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.JiraRestClient
 {
-    public class IssueContainer
+    internal class IssueContainer
     {
         public string expand { get; set; }
 

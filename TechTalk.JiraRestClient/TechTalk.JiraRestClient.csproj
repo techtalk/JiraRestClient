@@ -49,7 +49,10 @@
     <Compile Include="JiraClient.cs" />
     <Compile Include="JiraClientException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Status.cs" />
+    <Compile Include="Transition.cs" />
     <Compile Include="Timetracking.cs" />
+    <Compile Include="TransitionsContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

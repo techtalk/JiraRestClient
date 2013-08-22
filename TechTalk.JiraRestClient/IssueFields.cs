@@ -7,6 +7,7 @@ namespace TechTalk.JiraRestClient
     {
         public IssueFields()
         {
+            status = new Status();
             timetracking = new Timetracking();
 
             labels = new List<String>();
@@ -18,6 +19,7 @@ namespace TechTalk.JiraRestClient
         public String summary { get; set; }
         public String description { get; set; }
         public Timetracking timetracking { get; set; }
+        public Status status { get; set; } 
 
         public List<String> labels { get; set; }
         public List<Comment> comments { get; set; }

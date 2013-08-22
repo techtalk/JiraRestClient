@@ -38,3 +38,6 @@ list issues of a given type within a project
 
 **1.0.5**
 exceptions contain more information
+
+**1.0.6**
+support for issue state transitions

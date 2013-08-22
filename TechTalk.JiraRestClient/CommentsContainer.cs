@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.JiraRestClient
 {
-    public class CommentsContainer
+    internal class CommentsContainer
     {
         public int startAt { get; set; }
         public int maxResults { get; set; }
