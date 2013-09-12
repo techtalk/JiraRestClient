@@ -3,17 +3,17 @@ using System.Collections.Generic;
 
 namespace TechTalk.JiraRestClient
 {
-    public class Issue : IssueRef
+    public class Issue<TIssueFields> : IssueRef where TIssueFields : IssueFields, new()
     {
-        public Issue() { fields = new IssueFields(); }
+        public Issue() { fields = new TIssueFields(); }
 
         public string expand { get; set; }
 
         public string self { get; set; }
 
-        public IssueFields fields { get; set; }
+        public TIssueFields fields { get; set; }
 
-        internal static void ExpandLinks(Issue issue)
+        internal static void ExpandLinks<T>(Issue<T> issue) where T : IssueFields, new()
         {
             foreach (var link in issue.fields.issuelinks)
             {

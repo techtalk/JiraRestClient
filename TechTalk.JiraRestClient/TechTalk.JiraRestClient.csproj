@@ -40,6 +40,7 @@
     <Compile Include="Attachment.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="CommentsContainer.cs" />
+    <Compile Include="Compatibility.cs" />
     <Compile Include="IJiraClient.cs" />
     <Compile Include="Issue.cs" />
     <Compile Include="IssueContainer.cs" />

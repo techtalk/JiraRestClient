@@ -12,12 +12,7 @@ namespace TechTalk.JiraRestClient
 {
     //JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
 
-    public class JiraClient : JiraClient<Issue>, IJiraClient
-    {
-        public JiraClient(string baseUrl, string username, string password) : base(baseUrl, username, password) { }
-    }
-
-    public class JiraClient<TIssue> : IJiraClient<TIssue> where TIssue : Issue, new()
+    public class JiraClient<TIssueFields> : IJiraClient<TIssueFields> where TIssueFields : IssueFields, new()
     {
         private readonly string username;
         private readonly string password;
@@ -47,16 +42,16 @@ namespace TechTalk.JiraRestClient
         }
 
 
-        public IEnumerable<TIssue> GetIssues(String projectKey)
+        public IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey)
         {
             return GetIssues(projectKey, null);
         }
 
-        public IEnumerable<TIssue> GetIssues(String projectKey, String issueType)
+        public IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey, String issueType)
         {
             try
             {
-                var result = new List<TIssue>(4);
+                var result = new List<Issue<TIssueFields>>(4);
                 while (true)
                 {
                     var jql = String.Format("project={0}", WebUtility.HtmlEncode(projectKey));
@@ -68,8 +63,8 @@ namespace TechTalk.JiraRestClient
                     var response = client.Execute(request);
                     AssertStatus(response, HttpStatusCode.OK);
 
-                    var data = deserializer.Deserialize<IssueContainer<TIssue>>(response);
-                    result.AddRange(data.issues ?? Enumerable.Empty<TIssue>());
+                    var data = deserializer.Deserialize<IssueContainer<TIssueFields>>(response);
+                    result.AddRange(data.issues ?? Enumerable.Empty<Issue<TIssueFields>>());
 
                     if (result.Count < data.total) continue;
                     else /* all issues received */ break;
@@ -83,7 +78,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public TIssue LoadIssue(IssueRef issueRef)
+        public Issue<TIssueFields> LoadIssue(IssueRef issueRef)
         {
             if (String.IsNullOrEmpty(issueRef.id))
                 return LoadIssue(issueRef.key);
@@ -91,7 +86,7 @@ namespace TechTalk.JiraRestClient
                 return LoadIssue(issueRef.id);
         }
 
-        public TIssue LoadIssue(String issueRef)
+        public Issue<TIssueFields> LoadIssue(String issueRef)
         {
             try
             {
@@ -101,7 +96,7 @@ namespace TechTalk.JiraRestClient
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.OK);
 
-                var issue = deserializer.Deserialize<TIssue>(response);
+                var issue = deserializer.Deserialize<Issue<TIssueFields>>(response);
                 issue.fields.comments = GetComments(issue).ToList();
                 Issue.ExpandLinks(issue);
                 return issue;
@@ -113,12 +108,12 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public TIssue CreateIssue(String projectKey, String issueType, String summary)
+        public Issue<TIssueFields> CreateIssue(String projectKey, String issueType, String summary)
         {
-            return CreateIssue(projectKey, issueType, new IssueFields { summary = summary });
+            return CreateIssue(projectKey, issueType, (TIssueFields)new IssueFields(summary));
         }
 
-        public TIssue CreateIssue(String projectKey, String issueType, IssueFields issueFields)
+        public Issue<TIssueFields> CreateIssue(String projectKey, String issueType, TIssueFields issueFields)
         {
             try
             {
@@ -138,7 +133,7 @@ namespace TechTalk.JiraRestClient
                 if (issueFields.timetracking != null)
                     issueData.Add("timetracking", new { originalEstimate = issueFields.timetracking.originalEstimate });
 
-                var propertyList = issueFields.GetType().GetProperties().Where(p => p.Name.StartsWith("customfield_"));
+                var propertyList = typeof(TIssueFields).GetProperties().Where(p => p.Name.StartsWith("customfield_"));
                 foreach (var property in propertyList)
                 {
                     var value = property.GetValue(issueFields, null);
@@ -160,7 +155,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public TIssue UpdateIssue(TIssue issue)
+        public Issue<TIssueFields> UpdateIssue(Issue<TIssueFields> issue)
         {
             try
             {
@@ -178,7 +173,7 @@ namespace TechTalk.JiraRestClient
                 if (issue.fields.timetracking != null)
                     updateData.Add("timetracking", new[] { new { set = new { originalEstimate = issue.fields.timetracking.originalEstimate } } });
 
-                var propertyList = issue.fields.GetType().GetProperties().Where(p => p.Name.StartsWith("customfield_"));
+                var propertyList = typeof(TIssueFields).GetProperties().Where(p => p.Name.StartsWith("customfield_"));
                 foreach (var property in propertyList)
                 {
                     var value = property.GetValue(issue.fields, null);
@@ -237,7 +232,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public Issue TransitionIssue(IssueRef issue, Transition transition)
+        public Issue<TIssueFields> TransitionIssue(IssueRef issue, Transition transition)
         {
             try
             {

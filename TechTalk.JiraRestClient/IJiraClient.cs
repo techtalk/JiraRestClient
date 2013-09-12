@@ -4,31 +4,29 @@ using System.IO;
 
 namespace TechTalk.JiraRestClient
 {
-    public interface IJiraClient : IJiraClient<Issue> { }
-
-    public interface IJiraClient<TIssue> where TIssue : Issue, new()
+    public interface IJiraClient<TIssueFields> where TIssueFields : IssueFields, new()
     {
         /// <summary>Returns all issues for the given project</summary>
-        IEnumerable<TIssue> GetIssues(String projectKey);
+        IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey);
         /// <summary>Returns all issues of the specified type for the given project</summary>
-        IEnumerable<TIssue> GetIssues(String projectKey, String issueType);
+        IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey, String issueType);
         /// <summary>Returns the issue identified by the given ref</summary>
-        TIssue LoadIssue(String issueRef);
+        Issue<TIssueFields> LoadIssue(String issueRef);
         /// <summary>Returns the issue identified by the given ref</summary>
-        TIssue LoadIssue(IssueRef issueRef);
+        Issue<TIssueFields> LoadIssue(IssueRef issueRef);
         /// <summary>Creates an issue of the specified type for the given project</summary>
-        TIssue CreateIssue(String projectKey, String issueType, String summary);
+        Issue<TIssueFields> CreateIssue(String projectKey, String issueType, String summary);
         /// <summary>Creates an issue of the specified type for the given project</summary>
-        TIssue CreateIssue(String projectKey, String issueType, IssueFields issueFields);
+        Issue<TIssueFields> CreateIssue(String projectKey, String issueType, TIssueFields issueFields);
         /// <summary>Updates the given issue on the remote system</summary>
-        TIssue UpdateIssue(TIssue issue);
+        Issue<TIssueFields> UpdateIssue(Issue<TIssueFields> issue);
         /// <summary>Deletes the given issue from the remote system</summary>
         void DeleteIssue(IssueRef issue);
 
         /// <summary>Returns all transitions avilable to the given issue</summary>
         IEnumerable<Transition> GetTransitions(IssueRef issue);
         /// <summary>Changes the state of the given issue as described by the transition</summary>
-        Issue TransitionIssue(IssueRef issue, Transition transition);
+        Issue<TIssueFields> TransitionIssue(IssueRef issue, Transition transition);
 
         /// <summary>Returns all comments for the given issue</summary>
         IEnumerable<Comment> GetComments(IssueRef issue);
