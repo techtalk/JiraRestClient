@@ -108,24 +108,59 @@ namespace TechTalk.JiraRestClient
 
         public Issue CreateIssue(String projectKey, String issueType, String summary)
         {
+            return CreateIssue(projectKey, issueType, summary, null, null);
+        }
+
+        /// <summary>
+        /// Creates an issue in JIRA, allowing for immediate entry of estimate and any supplementary fields
+        /// </summary>
+        /// <param name="projectKey">Key for the project where the issue should be created</param>
+        /// <param name="issueType">Type of issue (e.g. bug, feature, ...)</param>
+        /// <param name="summary">Title for the issue</param>
+        /// <param name="originalEstimate">The estimate to be added to the issue. If not present, nothing will be filled in</param>
+        /// <param name="extraFields">Optional extra fields e.g. new { customfield_10601 = "Test string" }</param>
+        /// <returns></returns>
+        public Issue CreateIssue(string projectKey, string issueType, string summary, string originalEstimate, object extraFields)
+        {
             try
             {
                 var request = CreateRequest(Method.POST, "issue");
                 request.AddHeader("ContentType", "application/json");
-                request.AddBody(new
-                {
-                    fields = new
+                object requestBody = new
                     {
-                        project = new { key = projectKey },
-                        issuetype = new { name = issueType },
-                        summary = summary
+                        fields = new
+                            {
+                                project = new {key = projectKey},
+                                issuetype = new {name = issueType},
+                                summary = summary,
+                                timetracking = new
+                                    { 
+                                        originalEstimate, 
+                                        remainingEstimate = originalEstimate
+                                    }
+                                
+                            }
+                    };
+
+                if (extraFields != null)
+                {
+                    var rb = requestBody.ToDictionary();
+                    IDictionary<string, object> fields = rb["fields"].ToDictionary();
+                    foreach (var extraField in extraFields.ToDictionary())
+                    {
+                           fields.Add(extraField.Key, extraField.Value);
                     }
-                });
+                    rb["fields"] = fields;
+                    requestBody = rb;
+                }
 
-                var response = client.Execute(request);
-                AssertStatus(response, HttpStatusCode.Created);
+                request.AddBody(requestBody);
 
-                return deserializer.Deserialize<Issue>(response);
+                var response = this.client.Execute(request);
+                this.AssertStatus(response, HttpStatusCode.Created);
+
+                var issue = deserializer.Deserialize<Issue>(response);
+                return this.LoadIssue(issue.key);
             }
             catch (Exception ex)
             {

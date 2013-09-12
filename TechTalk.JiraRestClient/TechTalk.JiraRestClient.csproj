@@ -48,6 +48,7 @@
     <Compile Include="IssueRef.cs" />
     <Compile Include="JiraClient.cs" />
     <Compile Include="JiraClientException.cs" />
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="Transition.cs" />
