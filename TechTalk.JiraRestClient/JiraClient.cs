@@ -396,6 +396,30 @@ namespace TechTalk.JiraRestClient
             }
         }
 
+        public void CreateIssueRemoteLink(Issue issue, string url, string title = "")
+        {
+            try
+            {
+                var path = string.Format("issue/{0}/remotelink", issue.id);
+                var request = CreateRequest(Method.POST, path);
+                request.AddHeader("ContentType", "application/json");
+                request.AddBody(new
+                    {
+                        @object = new
+                            {
+                                url = url, title = !string.IsNullOrEmpty(title) ? title : url
+                            }
+                    });
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("CreateIssueLink(parent, child, relationship) error: {0}", ex);
+                throw new JiraClientException("Could not link issues", ex);
+            }
+        }
         public void DeleteIssueLink(IssueLink link)
         {
             try
