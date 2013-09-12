@@ -48,5 +48,14 @@ namespace TechTalk.JiraRestClient
         IssueLink CreateIssueLink(IssueRef parent, IssueRef child, String relationship);
         /// <summary>Removes the given link of two issues</summary>
         void DeleteIssueLink(IssueLink link);
+
+        /// <summary>Returns all remote links (attached urls) for the given issue</summary>
+        IEnumerable<RemoteLink> GetRemoteLinks(IssueRef issue);
+        /// <summary>Creates a remote link (attached url) for the given ssue</summary>
+        RemoteLink CreateRemoteLink(IssueRef issue, RemoteLink relationship);
+        /// <summary>Updates the given remote link (attached url) of the specified issue</summary>
+        RemoteLink UpdateRemoteLink(IssueRef issue, RemoteLink relationship);
+        /// <summary>Removes the given remote link (attached url) of the specified issue</summary>
+        void DeleteRemoteLink(IssueRef issue, RemoteLink link);
     }
 }

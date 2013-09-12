@@ -49,6 +49,8 @@
     <Compile Include="JiraClient.cs" />
     <Compile Include="JiraClientException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteLink.cs" />
+    <Compile Include="RemoteLinkResult.cs" />
     <Compile Include="Status.cs" />
     <Compile Include="Transition.cs" />
     <Compile Include="Timetracking.cs" />

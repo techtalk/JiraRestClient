@@ -17,6 +17,7 @@ Available on NuGet as [TechTalk.JiraRestClient](http://nuget.org/packages/TechTa
 5. List, create and delete comments
 6. List, create and delete attachments
 7. List, create and delete issue links
+8. List, create, update and delete issue remote links
 
 --------------------------------------------------
 
@@ -42,3 +43,6 @@ exceptions contain more information
 
 **1.0.6**
 support for issue state transitions
+
+**1.0.7**
+support for issue remote links (attached URLs)

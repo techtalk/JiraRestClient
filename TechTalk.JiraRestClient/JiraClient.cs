@@ -10,6 +10,7 @@ using RestSharp.Deserializers;
 
 namespace TechTalk.JiraRestClient
 {
+    // JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
     public class JiraClient : IJiraClient
     {
         private readonly string username;
@@ -396,30 +397,6 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public void CreateIssueRemoteLink(Issue issue, string url, string title = "")
-        {
-            try
-            {
-                var path = string.Format("issue/{0}/remotelink", issue.id);
-                var request = CreateRequest(Method.POST, path);
-                request.AddHeader("ContentType", "application/json");
-                request.AddBody(new
-                    {
-                        @object = new
-                            {
-                                url = url, title = !string.IsNullOrEmpty(title) ? title : url
-                            }
-                    });
-
-                var response = client.Execute(request);
-                AssertStatus(response, HttpStatusCode.Created);
-            }
-            catch (Exception ex)
-            {
-                Trace.TraceError("CreateIssueLink(parent, child, relationship) error: {0}", ex);
-                throw new JiraClientException("Could not link issues", ex);
-            }
-        }
         public void DeleteIssueLink(IssueLink link)
         {
             try
@@ -434,6 +411,108 @@ namespace TechTalk.JiraRestClient
             {
                 Trace.TraceError("DeleteIssueLink(link) error: {0}", ex);
                 throw new JiraClientException("Could not delete issue link", ex);
+            }
+        }
+
+
+        public IEnumerable<RemoteLink> GetRemoteLinks(IssueRef issue)
+        {
+            try
+            {
+                var path = string.Format("issue/{0}/remotelink", issue.id);
+                var request = CreateRequest(Method.GET, path);
+                request.AddHeader("ContentType", "application/json");
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                return deserializer.Deserialize<List<RemoteLinkResult>>(response)
+                    .Select(lr => { lr.@object.id = lr.id; return lr.@object; }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetRemoteLinks(issue) error: {0}", ex);
+                throw new JiraClientException("Could not create external link for issue", ex);
+            }
+        }
+
+        public RemoteLink CreateRemoteLink(IssueRef issue, RemoteLink remoteLink)
+        {
+            try
+            {
+                var path = string.Format("issue/{0}/remotelink", issue.id);
+                var request = CreateRequest(Method.POST, path);
+                request.AddHeader("ContentType", "application/json");
+                request.AddBody(new
+                {
+                    application = new
+                    {
+                        type = "TechTalk.JiraRestClient",
+                        name = "JIRA REST client"
+                    },
+                    @object = new
+                    {
+                        url = remoteLink.url,
+                        title = remoteLink.title,
+                        summary = remoteLink.summary
+                    }
+                });
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                //returns: { "id": <id>, "self": <url> }
+                remoteLink.id = deserializer.Deserialize<RemoteLink>(response).id;
+                return remoteLink;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("CreateRemoteLink(issue, remoteLink) error: {0}", ex);
+                throw new JiraClientException("Could not create external link for issue", ex);
+            }
+        }
+
+        public RemoteLink UpdateRemoteLink(IssueRef issue, RemoteLink remoteLink)
+        {
+            try
+            {
+                var path = string.Format("issue/{0}/remotelink/{1}", issue.id, remoteLink);
+                var request = CreateRequest(Method.POST, path);
+                request.AddHeader("ContentType", "application/json");
+
+                var updateData = new Dictionary<string, object>();
+                if (remoteLink.url != null) updateData.Add("url", remoteLink.url);
+                if (remoteLink.title != null) updateData.Add("title", remoteLink.title);
+                if (remoteLink.summary != null) updateData.Add("summary", remoteLink.summary);
+                request.AddBody(new { @object = updateData });
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.NoContent);
+
+                return remoteLink;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("UpdateRemoteLink(issue, remoteLink) error: {0}", ex);
+                throw new JiraClientException("Could not create external link for issue", ex);
+            }
+        }
+
+        public void DeleteRemoteLink(IssueRef issue, RemoteLink remoteLink)
+        {
+            try
+            {
+                var path = string.Format("issue/{0}/remotelink/{1}", issue.id, remoteLink.id);
+                var request = CreateRequest(Method.DELETE, path);
+                request.AddHeader("ContentType", "application/json");
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.NoContent);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("DeleteRemoteLink(issue, remoteLink) error: {0}", ex);
+                throw new JiraClientException("Could not create external link for issue", ex);
             }
         }
     }
