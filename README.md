@@ -13,6 +13,7 @@ Available on NuGet as [TechTalk.JiraRestClient](http://nuget.org/packages/TechTa
     - description
     - labels
     - original estimate
+    - custom fields ('customfield_&lt;id&gt;')
 4. Query and apply state transitions 
 5. List, create and delete comments
 6. List, create and delete attachments
@@ -46,3 +47,6 @@ support for issue state transitions
 
 **1.0.7**
 support for issue remote links (attached URLs)
+
+**1.0.8**
+support for custom issue fields ('customfield_&lt;id&gt;')

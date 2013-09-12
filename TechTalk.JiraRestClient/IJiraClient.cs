@@ -4,20 +4,24 @@ using System.IO;
 
 namespace TechTalk.JiraRestClient
 {
-    public interface IJiraClient
+    public interface IJiraClient : IJiraClient<Issue> { }
+
+    public interface IJiraClient<TIssue> where TIssue : Issue, new()
     {
         /// <summary>Returns all issues for the given project</summary>
-        IEnumerable<Issue> GetIssues(String projectKey);
+        IEnumerable<TIssue> GetIssues(String projectKey);
         /// <summary>Returns all issues of the specified type for the given project</summary>
-        IEnumerable<Issue> GetIssues(String projectKey, String issueType);
+        IEnumerable<TIssue> GetIssues(String projectKey, String issueType);
         /// <summary>Returns the issue identified by the given ref</summary>
-        Issue LoadIssue(String issueRef);
+        TIssue LoadIssue(String issueRef);
         /// <summary>Returns the issue identified by the given ref</summary>
-        Issue LoadIssue(IssueRef issueRef);
+        TIssue LoadIssue(IssueRef issueRef);
         /// <summary>Creates an issue of the specified type for the given project</summary>
-        Issue CreateIssue(String projectKey, String issueType, String summary);
+        TIssue CreateIssue(String projectKey, String issueType, String summary);
+        /// <summary>Creates an issue of the specified type for the given project</summary>
+        TIssue CreateIssue(String projectKey, String issueType, IssueFields issueFields);
         /// <summary>Updates the given issue on the remote system</summary>
-        Issue UpdateIssue(Issue issue);
+        TIssue UpdateIssue(TIssue issue);
         /// <summary>Deletes the given issue from the remote system</summary>
         void DeleteIssue(IssueRef issue);
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TechTalk.JiraRestClient
 {
-    internal class IssueContainer
+    internal class IssueContainer<TIssue> where TIssue : Issue
     {
         public string expand { get; set; }
 
@@ -11,6 +11,6 @@ namespace TechTalk.JiraRestClient
         public int total { get; set; }
         public int startAt { get; set; }
 
-        public List<Issue> issues { get; set; }
+        public List<TIssue> issues { get; set; }
     }
 }

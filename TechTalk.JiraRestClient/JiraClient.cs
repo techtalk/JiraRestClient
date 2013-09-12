@@ -10,8 +10,14 @@ using RestSharp.Deserializers;
 
 namespace TechTalk.JiraRestClient
 {
-    // JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
-    public class JiraClient : IJiraClient
+    //JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
+
+    public class JiraClient : JiraClient<Issue>, IJiraClient
+    {
+        public JiraClient(string baseUrl, string username, string password) : base(baseUrl, username, password) { }
+    }
+
+    public class JiraClient<TIssue> : IJiraClient<TIssue> where TIssue : Issue, new()
     {
         private readonly string username;
         private readonly string password;
@@ -41,16 +47,16 @@ namespace TechTalk.JiraRestClient
         }
 
 
-        public IEnumerable<Issue> GetIssues(String projectKey)
+        public IEnumerable<TIssue> GetIssues(String projectKey)
         {
             return GetIssues(projectKey, null);
         }
 
-        public IEnumerable<Issue> GetIssues(String projectKey, String issueType)
+        public IEnumerable<TIssue> GetIssues(String projectKey, String issueType)
         {
             try
             {
-                var result = new List<Issue>(4);
+                var result = new List<TIssue>(4);
                 while (true)
                 {
                     var jql = String.Format("project={0}", WebUtility.HtmlEncode(projectKey));
@@ -62,8 +68,8 @@ namespace TechTalk.JiraRestClient
                     var response = client.Execute(request);
                     AssertStatus(response, HttpStatusCode.OK);
 
-                    var data = deserializer.Deserialize<IssueContainer>(response);
-                    result.AddRange(data.issues ?? Enumerable.Empty<Issue>());
+                    var data = deserializer.Deserialize<IssueContainer<TIssue>>(response);
+                    result.AddRange(data.issues ?? Enumerable.Empty<TIssue>());
 
                     if (result.Count < data.total) continue;
                     else /* all issues received */ break;
@@ -77,7 +83,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public Issue LoadIssue(IssueRef issueRef)
+        public TIssue LoadIssue(IssueRef issueRef)
         {
             if (String.IsNullOrEmpty(issueRef.id))
                 return LoadIssue(issueRef.key);
@@ -85,7 +91,7 @@ namespace TechTalk.JiraRestClient
                 return LoadIssue(issueRef.id);
         }
 
-        public Issue LoadIssue(String issueRef)
+        public TIssue LoadIssue(String issueRef)
         {
             try
             {
@@ -95,9 +101,9 @@ namespace TechTalk.JiraRestClient
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.OK);
 
-                var issue = deserializer.Deserialize<Issue>(response);
+                var issue = deserializer.Deserialize<TIssue>(response);
                 issue.fields.comments = GetComments(issue).ToList();
-                issue.ExpandLinks(issue);
+                Issue.ExpandLinks(issue);
                 return issue;
             }
             catch (Exception ex)
@@ -107,26 +113,45 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public Issue CreateIssue(String projectKey, String issueType, String summary)
+        public TIssue CreateIssue(String projectKey, String issueType, String summary)
+        {
+            return CreateIssue(projectKey, issueType, new IssueFields { summary = summary });
+        }
+
+        public TIssue CreateIssue(String projectKey, String issueType, IssueFields issueFields)
         {
             try
             {
                 var request = CreateRequest(Method.POST, "issue");
                 request.AddHeader("ContentType", "application/json");
-                request.AddBody(new
+
+                var issueData = new Dictionary<string, object>();
+                issueData.Add("project", new { key = projectKey });
+                issueData.Add("issuetype", new { name = issueType });
+
+                if (issueFields.summary != null)
+                    issueData.Add("summary", issueFields.summary);
+                if (issueFields.description != null)
+                    issueData.Add("description", issueFields.description);
+                if (issueFields.labels != null)
+                    issueData.Add("labels", issueFields.labels);
+                if (issueFields.timetracking != null)
+                    issueData.Add("timetracking", new { originalEstimate = issueFields.timetracking.originalEstimate });
+
+                var propertyList = issueFields.GetType().GetProperties().Where(p => p.Name.StartsWith("customfield_"));
+                foreach (var property in propertyList)
                 {
-                    fields = new
-                    {
-                        project = new { key = projectKey },
-                        issuetype = new { name = issueType },
-                        summary = summary
-                    }
-                });
+                    var value = property.GetValue(issueFields, null);
+                    if (value != null) issueData.Add(property.Name, value);
+                }
+
+                request.AddBody(new { fields = issueData });
 
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.Created);
 
-                return deserializer.Deserialize<Issue>(response);
+                var issueRef = deserializer.Deserialize<IssueRef>(response);
+                return LoadIssue(issueRef);
             }
             catch (Exception ex)
             {
@@ -135,7 +160,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public Issue UpdateIssue(Issue issue)
+        public TIssue UpdateIssue(TIssue issue)
         {
             try
             {
@@ -143,17 +168,24 @@ namespace TechTalk.JiraRestClient
                 var request = CreateRequest(Method.PUT, path);
                 request.AddHeader("ContentType", "application/json");
 
-                var update = new Dictionary<string, object>();
+                var updateData = new Dictionary<string, object>();
                 if (issue.fields.summary != null)
-                    update.Add("summary", new[] { new { set = issue.fields.summary } });
+                    updateData.Add("summary", new[] { new { set = issue.fields.summary } });
                 if (issue.fields.description != null)
-                    update.Add("description", new[] { new { set = issue.fields.description } });
+                    updateData.Add("description", new[] { new { set = issue.fields.description } });
                 if (issue.fields.labels != null)
-                    update.Add("labels", new[] { new { set = issue.fields.labels } });
+                    updateData.Add("labels", new[] { new { set = issue.fields.labels } });
                 if (issue.fields.timetracking != null)
-                    update.Add("timetracking", new[] { new { set = new { originalEstimate = issue.fields.timetracking.originalEstimate } } });
+                    updateData.Add("timetracking", new[] { new { set = new { originalEstimate = issue.fields.timetracking.originalEstimate } } });
 
-                request.AddBody(new { update = update });
+                var propertyList = issue.fields.GetType().GetProperties().Where(p => p.Name.StartsWith("customfield_"));
+                foreach (var property in propertyList)
+                {
+                    var value = property.GetValue(issue.fields, null);
+                    if (value != null) updateData.Add(property.Name, new[] { new { set = value } });
+                }
+
+                request.AddBody(new { update = updateData });
 
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.NoContent);
@@ -459,7 +491,7 @@ namespace TechTalk.JiraRestClient
                 });
 
                 var response = client.Execute(request);
-                AssertStatus(response, HttpStatusCode.OK);
+                AssertStatus(response, HttpStatusCode.Created);
 
                 //returns: { "id": <id>, "self": <url> }
                 remoteLink.id = deserializer.Deserialize<RemoteLink>(response).id;

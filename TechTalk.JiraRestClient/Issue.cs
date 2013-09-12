@@ -13,7 +13,7 @@ namespace TechTalk.JiraRestClient
 
         public IssueFields fields { get; set; }
 
-        internal void ExpandLinks(Issue issue)
+        internal static void ExpandLinks(Issue issue)
         {
             foreach (var link in issue.fields.issuelinks)
             {
