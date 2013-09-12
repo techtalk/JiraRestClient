@@ -416,10 +416,11 @@ namespace TechTalk.JiraRestClient
             }
             catch (Exception ex)
             {
-                Trace.TraceError("CreateIssueLink(parent, child, relationship) error: {0}", ex);
-                throw new JiraClientException("Could not link issues", ex);
+                Trace.TraceError("CreateIssueRemoteLink(issue, url, title) error: {0}", ex);
+                throw new JiraClientException("Could not create external link for issue", ex);
             }
         }
+
         public void DeleteIssueLink(IssueLink link)
         {
             try
