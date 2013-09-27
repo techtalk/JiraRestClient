@@ -454,7 +454,7 @@ namespace TechTalk.JiraRestClient
                 AssertStatus(response, HttpStatusCode.OK);
 
                 return deserializer.Deserialize<List<RemoteLinkResult>>(response)
-                    .Select(lr => { lr.@object.id = lr.id; return lr.@object; }).ToList();
+                    .Select(RemoteLink.Convert).ToList();
             }
             catch (Exception ex)
             {
@@ -489,8 +489,8 @@ namespace TechTalk.JiraRestClient
                 AssertStatus(response, HttpStatusCode.Created);
 
                 //returns: { "id": <id>, "self": <url> }
-                remoteLink.id = deserializer.Deserialize<RemoteLink>(response).id;
-                return remoteLink;
+                var linkId = deserializer.Deserialize<RemoteLink>(response).id;
+                return GetRemoteLinks(issue).Single(rl => rl.id == linkId);
             }
             catch (Exception ex)
             {
@@ -503,8 +503,8 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = string.Format("issue/{0}/remotelink/{1}", issue.id, remoteLink);
-                var request = CreateRequest(Method.POST, path);
+                var path = string.Format("issue/{0}/remotelink/{1}", issue.id, remoteLink.id);
+                var request = CreateRequest(Method.PUT, path);
                 request.AddHeader("ContentType", "application/json");
 
                 var updateData = new Dictionary<string, object>();
@@ -516,7 +516,7 @@ namespace TechTalk.JiraRestClient
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.NoContent);
 
-                return remoteLink;
+                return GetRemoteLinks(issue).Single(rl => rl.id == remoteLink.id);
             }
             catch (Exception ex)
             {

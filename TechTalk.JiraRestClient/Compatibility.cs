@@ -54,7 +54,7 @@ namespace TechTalk.JiraRestClient
 
         /// <summary>Returns all remote links (attached urls) for the given issue</summary>
         IEnumerable<RemoteLink> GetRemoteLinks(IssueRef issue);
-        /// <summary>Creates a remote link (attached url) for the given ssue</summary>
+        /// <summary>Creates a remote link (attached url) for the given issue</summary>
         RemoteLink CreateRemoteLink(IssueRef issue, RemoteLink remoteLink);
         /// <summary>Updates the given remote link (attached url) of the specified issue</summary>
         RemoteLink UpdateRemoteLink(IssueRef issue, RemoteLink remoteLink);
