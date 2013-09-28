@@ -110,7 +110,7 @@ namespace TechTalk.JiraRestClient
 
         public Issue<TIssueFields> CreateIssue(String projectKey, String issueType, String summary)
         {
-            return CreateIssue(projectKey, issueType, (TIssueFields)new IssueFields(summary));
+            return CreateIssue(projectKey, issueType, new TIssueFields { summary = summary });
         }
 
         public Issue<TIssueFields> CreateIssue(String projectKey, String issueType, TIssueFields issueFields)

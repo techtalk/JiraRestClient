@@ -16,12 +16,6 @@ namespace TechTalk.JiraRestClient
             attachment = new List<Attachment>();
         }
 
-        internal IssueFields(string summary) // not calling 'this()'
-        {
-            this.summary = summary;
-            //all other fields = null
-        }
-
         public String summary { get; set; }
         public String description { get; set; }
         public Timetracking timetracking { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace TechTalk.JiraRestClient
 {
@@ -16,7 +17,7 @@ namespace TechTalk.JiraRestClient
             }
             set
             {
-                originalEstimate = string.Format("{0}d", value);
+                originalEstimate = string.Format(CultureInfo.InvariantCulture, "{0}d", value);
                 originalEstimateSeconds = (int)(value * DayToSecFactor);
             }
         }
