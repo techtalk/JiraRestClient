@@ -264,21 +264,16 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var result = new List<JiraUser>(10);
-                while (true)
-                {
-                    var path = String.Format("issue/{0}/comment", issue.id);
-                    var request = CreateRequest(Method.GET, path);
+                var result = new List<JiraUser>();
+                var path = String.Format("issue/{0}/watchers", issue.id);
+                var request = CreateRequest(Method.GET, path);
 
-                    var response = client.Execute(request);
-                    AssertStatus(response, HttpStatusCode.OK);
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
 
-                    var data = deserializer.Deserialize<WatchersContainer>(response);
-                    result.AddRange(data.watchers ?? Enumerable.Empty<JiraUser>());
+                var data = deserializer.Deserialize<WatchersContainer>(response);
+                result.AddRange(data.watchers ?? Enumerable.Empty<JiraUser>());
 
-                    if (result.Count < data.watchCount) continue;
-                    else /* all issues received */ break;
-                }
                 return result;
             }
             catch (Exception ex)
