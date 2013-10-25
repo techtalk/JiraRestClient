@@ -14,12 +14,17 @@ namespace TechTalk.JiraRestClient
             comments = new List<Comment>();
             issuelinks = new List<IssueLink>();
             attachment = new List<Attachment>();
+            watchers = new List<JiraUser>();
         }
 
         public String summary { get; set; }
         public String description { get; set; }
         public Timetracking timetracking { get; set; }
         public Status status { get; set; }
+
+        public JiraUser reporter { get; set; }
+        public JiraUser assignee { get; set; }
+        public List<JiraUser> watchers { get; set; } 
 
         public List<String> labels { get; set; }
         public List<Comment> comments { get; set; }
