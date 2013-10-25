@@ -264,10 +264,10 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var result = new List<JiraUser>(10);
+                var result = new List<JiraUser>();
                 while (true)
                 {
-                    var path = String.Format("issue/{0}/comment", issue.id);
+                    var path = String.Format("issue/{0}/watchers", issue.id);
                     var request = CreateRequest(Method.GET, path);
 
                     var response = client.Execute(request);
