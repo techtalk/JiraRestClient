@@ -28,6 +28,9 @@ namespace TechTalk.JiraRestClient
         /// <summary>Changes the state of the given issue as described by the transition</summary>
         Issue<TIssueFields> TransitionIssue(IssueRef issue, Transition transition);
 
+        /// <summary>Returns all watchers for the given issue</summary>
+        IEnumerable<JiraUser> GetWatchers(IssueRef issue);
+
         /// <summary>Returns all comments for the given issue</summary>
         IEnumerable<Comment> GetComments(IssueRef issue);
         /// <summary>Adds a comment to the given issue</summary>

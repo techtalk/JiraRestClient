@@ -29,6 +29,9 @@ namespace TechTalk.JiraRestClient
         /// <summary>Changes the state of the given issue as described by the transition</summary>
         Issue TransitionIssue(IssueRef issue, Transition transition);
 
+        /// <summary>Returns all watchers for the given issue</summary>
+        IEnumerable<JiraUser> GetWatchers(IssueRef issue);
+
         /// <summary>Returns all comments for the given issue</summary>
         IEnumerable<Comment> GetComments(IssueRef issue);
         /// <summary>Adds a comment to the given issue</summary>
@@ -120,6 +123,11 @@ namespace TechTalk.JiraRestClient
             return Issue.From(client.TransitionIssue(issue, transition));
         }
 
+        public IEnumerable<JiraUser> GetWatchers(IssueRef issue)
+        {
+            return client.GetWatchers(issue);
+        }
+
         public IEnumerable<Comment> GetComments(IssueRef issue)
         {
             return client.GetComments(issue);
@@ -199,9 +207,9 @@ namespace TechTalk.JiraRestClient
                 return null;
 
             return new Issue
-            { 
+            {
                 expand = other.expand,
-                id =other.id,
+                id = other.id,
                 key = other.key,
                 self = other.self,
                 fields = other.fields,

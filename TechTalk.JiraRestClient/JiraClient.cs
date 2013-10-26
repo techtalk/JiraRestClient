@@ -260,21 +260,18 @@ namespace TechTalk.JiraRestClient
             }
         }
 
+
         public IEnumerable<JiraUser> GetWatchers(IssueRef issue)
         {
             try
             {
-                var result = new List<JiraUser>();
                 var path = String.Format("issue/{0}/watchers", issue.id);
                 var request = CreateRequest(Method.GET, path);
 
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.OK);
 
-                var data = deserializer.Deserialize<WatchersContainer>(response);
-                result.AddRange(data.watchers ?? Enumerable.Empty<JiraUser>());
-
-                return result;
+                return deserializer.Deserialize<WatchersContainer>(response).watchers;
             }
             catch (Exception ex)
             {
@@ -282,6 +279,7 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("Could not load watchers", ex);
             }
         }
+
 
         public IEnumerable<Comment> GetComments(IssueRef issue)
         {
