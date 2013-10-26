@@ -22,3 +22,4 @@ if ERRORLEVEL 1 goto :EOF
 
 .nuget\nuget pack
 
+rmdir /s/q bin
