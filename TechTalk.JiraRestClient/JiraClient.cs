@@ -98,6 +98,7 @@ namespace TechTalk.JiraRestClient
 
                 var issue = deserializer.Deserialize<Issue<TIssueFields>>(response);
                 issue.fields.comments = GetComments(issue).ToList();
+                issue.fields.watchers = GetWatchers(issue).ToList();
                 Issue.ExpandLinks(issue);
                 return issue;
             }
@@ -259,6 +260,28 @@ namespace TechTalk.JiraRestClient
             }
         }
 
+        public IEnumerable<JiraUser> GetWatchers(IssueRef issue)
+        {
+            try
+            {
+                var result = new List<JiraUser>();
+                var path = String.Format("issue/{0}/watchers", issue.id);
+                var request = CreateRequest(Method.GET, path);
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<WatchersContainer>(response);
+                result.AddRange(data.watchers ?? Enumerable.Empty<JiraUser>());
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetWatchers(issue) error: {0}", ex);
+                throw new JiraClientException("Could not load watchers", ex);
+            }
+        }
 
         public IEnumerable<Comment> GetComments(IssueRef issue)
         {

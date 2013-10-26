@@ -41,6 +41,7 @@
     <Compile Include="Comment.cs" />
     <Compile Include="CommentsContainer.cs" />
     <Compile Include="Compatibility.cs" />
+    <Compile Include="WatchersContainer.cs" />
     <Compile Include="IJiraClient.cs" />
     <Compile Include="Issue.cs" />
     <Compile Include="IssueContainer.cs" />
@@ -49,6 +50,7 @@
     <Compile Include="IssueRef.cs" />
     <Compile Include="JiraClient.cs" />
     <Compile Include="JiraClientException.cs" />
+    <Compile Include="JiraUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoteLink.cs" />
     <Compile Include="RemoteLinkResult.cs" />
