@@ -20,6 +20,8 @@ Available on NuGet as [TechTalk.JiraRestClient](http://nuget.org/packages/TechTa
 + List, create and delete attachments
 + List, create and delete issue links
 + List, create, update and delete issue remote links
++ List issue types
++ Query server info
 
 --------------------------------------------------
 
@@ -54,3 +56,6 @@ support for custom issue fields ('customfield_&lt;id&gt;')
 
 **2.1.0**
 support for reading actors per issue
+
+**2.2.0**
+support for querying issue types and server info
