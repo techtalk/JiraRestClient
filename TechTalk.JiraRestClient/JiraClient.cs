@@ -570,6 +570,7 @@ namespace TechTalk.JiraRestClient
             try
             {
                 var request = CreateRequest(Method.GET, "issuetype");
+                request.AddHeader("ContentType", "application/json");
 
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.OK);
@@ -589,8 +590,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = string.Format("serverInfo");
-                var request = CreateRequest(Method.GET, path);
+                var request = CreateRequest(Method.GET, "serverInfo");
                 request.AddHeader("ContentType", "application/json");
 
                 var response = client.Execute(request);
