@@ -67,6 +67,6 @@ namespace TechTalk.JiraRestClient
         IEnumerable<IssueType> GetIssueTypes();
 
         /// <summary>Returns information about the JIRA server</summary>
-        RemoteServerInfo GetServerInfo();
+        ServerInfo GetServerInfo();
     }
 }

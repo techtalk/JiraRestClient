@@ -586,7 +586,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public RemoteServerInfo GetServerInfo()
+        public ServerInfo GetServerInfo()
         {
             try
             {
@@ -596,7 +596,7 @@ namespace TechTalk.JiraRestClient
                 var response = client.Execute(request);
                 AssertStatus(response, HttpStatusCode.OK);
 
-                return deserializer.Deserialize<RemoteServerInfo>(response);
+                return deserializer.Deserialize<ServerInfo>(response);
             }
             catch (Exception ex)
             {
