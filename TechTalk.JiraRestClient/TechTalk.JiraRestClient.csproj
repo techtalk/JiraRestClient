@@ -42,6 +42,7 @@
     <Compile Include="CommentsContainer.cs" />
     <Compile Include="Compatibility.cs" />
     <Compile Include="IssueType.cs" />
+    <Compile Include="RemoteServerInfo.cs" />
     <Compile Include="WatchersContainer.cs" />
     <Compile Include="IJiraClient.cs" />
     <Compile Include="Issue.cs" />

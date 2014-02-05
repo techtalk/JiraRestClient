@@ -584,5 +584,25 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("Could not load issue types", ex);
             }
         }
+
+        public RemoteServerInfo GetServerInfo()
+        {
+            try
+            {
+                var path = string.Format("serverInfo");
+                var request = CreateRequest(Method.GET, path);
+                request.AddHeader("ContentType", "application/json");
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                return deserializer.Deserialize<RemoteServerInfo>(response);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetServerInfo() error: {0}", ex);
+                throw new JiraClientException("Could not retrieve server information", ex);
+            }
+        }
     }
 }
