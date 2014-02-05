@@ -564,5 +564,25 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("Could not create external link for issue", ex);
             }
         }
+
+        public IEnumerable<IssueType> GetIssueTypes()
+        {
+            try
+            {
+                var request = CreateRequest(Method.GET, "issuetype");
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<List<IssueType>>(response);
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetIssueTypes() error: {0}", ex);
+                throw new JiraClientException("Could not load issue types", ex);
+            }
+        }
     }
 }

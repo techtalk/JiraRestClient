@@ -62,5 +62,8 @@ namespace TechTalk.JiraRestClient
         RemoteLink UpdateRemoteLink(IssueRef issue, RemoteLink remoteLink);
         /// <summary>Removes the given remote link (attached url) of the specified issue</summary>
         void DeleteRemoteLink(IssueRef issue, RemoteLink remoteLink);
+
+        /// <summary>Returns all issue types</summary>
+        IEnumerable<IssueType> GetIssueTypes();
     }
 }
