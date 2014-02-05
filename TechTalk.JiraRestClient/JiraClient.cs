@@ -229,8 +229,8 @@ namespace TechTalk.JiraRestClient
             }
             catch (Exception ex)
             {
-                Trace.TraceError("UpdateIssue(issue) error: {0}", ex);
-                throw new JiraClientException("Could not update issue", ex);
+                Trace.TraceError("GetTransitions(issue) error: {0}", ex);
+                throw new JiraClientException("Could not load issue transitions", ex);
             }
         }
 
@@ -256,8 +256,8 @@ namespace TechTalk.JiraRestClient
             }
             catch (Exception ex)
             {
-                Trace.TraceError("UpdateIssue(issue) error: {0}", ex);
-                throw new JiraClientException("Could not update issue", ex);
+                Trace.TraceError("TransitionIssue(issue, transition) error: {0}", ex);
+                throw new JiraClientException("Could not transition issue state", ex);
             }
         }
 
@@ -481,7 +481,7 @@ namespace TechTalk.JiraRestClient
             catch (Exception ex)
             {
                 Trace.TraceError("GetRemoteLinks(issue) error: {0}", ex);
-                throw new JiraClientException("Could not create external link for issue", ex);
+                throw new JiraClientException("Could not load external links for issue", ex);
             }
         }
 
@@ -543,7 +543,7 @@ namespace TechTalk.JiraRestClient
             catch (Exception ex)
             {
                 Trace.TraceError("UpdateRemoteLink(issue, remoteLink) error: {0}", ex);
-                throw new JiraClientException("Could not create external link for issue", ex);
+                throw new JiraClientException("Could not update external link for issue", ex);
             }
         }
 
@@ -561,7 +561,7 @@ namespace TechTalk.JiraRestClient
             catch (Exception ex)
             {
                 Trace.TraceError("DeleteRemoteLink(issue, remoteLink) error: {0}", ex);
-                throw new JiraClientException("Could not create external link for issue", ex);
+                throw new JiraClientException("Could not delete external link for issue", ex);
             }
         }
 
