@@ -286,22 +286,14 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var result = new List<Comment>(4);
-                while (true)
-                {
-                    var path = String.Format("issue/{0}/comment", issue.id);
-                    var request = CreateRequest(Method.GET, path);
+                var path = String.Format("issue/{0}/comment", issue.id);
+                var request = CreateRequest(Method.GET, path);
 
-                    var response = client.Execute(request);
-                    AssertStatus(response, HttpStatusCode.OK);
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
 
-                    var data = deserializer.Deserialize<CommentsContainer>(response);
-                    result.AddRange(data.comments ?? Enumerable.Empty<Comment>());
-
-                    if (result.Count < data.total) continue;
-                    else /* all issues received */ break;
-                }
-                return result;
+                var data = deserializer.Deserialize<CommentsContainer>(response);
+                return data.comments ?? Enumerable.Empty<Comment>();
             }
             catch (Exception ex)
             {
