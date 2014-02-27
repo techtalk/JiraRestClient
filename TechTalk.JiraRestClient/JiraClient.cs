@@ -44,40 +44,58 @@ namespace TechTalk.JiraRestClient
 
         public IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey)
         {
-            return GetIssues(projectKey, null);
+            return EnumerateIssues(projectKey, null).ToArray();
         }
 
         public IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey, String issueType)
         {
+            return EnumerateIssues(projectKey, issueType).ToArray();
+        }
+
+        public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey)
+        {
+            return EnumerateIssues(projectKey, null);
+        }
+
+        public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey, String issueType)
+        {
             try
             {
-                var result = new List<Issue<TIssueFields>>(4);
-                while (true)
-                {
-                    var queryCount = Math.Min(result.Capacity, 200);
-                    var jql = String.Format("project={0}", Uri.EscapeUriString(projectKey));
-                    if (!String.IsNullOrEmpty(issueType))
-                        jql += String.Format("+AND+issueType={0}", Uri.EscapeUriString(issueType));
-                    var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, result.Count, queryCount);
-                    var request = CreateRequest(Method.GET, path);
-
-                    var response = client.Execute(request);
-                    AssertStatus(response, HttpStatusCode.OK);
-
-                    var data = deserializer.Deserialize<IssueContainer<TIssueFields>>(response);
-                    result.AddRange(data.issues ?? Enumerable.Empty<Issue<TIssueFields>>());
-
-                    if (result.Count < data.total) continue;
-                    else /* all issues received */ break;
-                }
-                return result;
+                return EnumerateIssuesInternal(projectKey, issueType);
             }
             catch (Exception ex)
             {
-                Trace.TraceError("GetIssues(projectKey) error: {0}", ex);
+                Trace.TraceError("EnumerateIssues(projectKey, issueType) error: {0}", ex);
                 throw new JiraClientException("Could not load issues", ex);
             }
         }
+
+        private IEnumerable<Issue<TIssueFields>> EnumerateIssuesInternal(String projectKey, String issueType)
+        {
+            var queryCount = 50;
+            var resultCount = 0;
+            while (true)
+            {
+                var jql = String.Format("project={0}", Uri.EscapeUriString(projectKey));
+                if (!String.IsNullOrEmpty(issueType))
+                    jql += String.Format("+AND+issueType={0}", Uri.EscapeUriString(issueType));
+                var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
+                var request = CreateRequest(Method.GET, path);
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<IssueContainer<TIssueFields>>(response);
+                var issues = data.issues ?? Enumerable.Empty<Issue<TIssueFields>>();
+
+                foreach (var item in issues) yield return item;
+                resultCount += issues.Count();
+
+                if (resultCount < data.total) continue;
+                else /* all issues received */ break;
+            }
+        }
+
 
         public Issue<TIssueFields> LoadIssue(IssueRef issueRef)
         {

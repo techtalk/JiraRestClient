@@ -6,7 +6,7 @@
 Available on NuGet as [TechTalk.JiraRestClient](http://nuget.org/packages/TechTalk.JiraRestClient/)
 
 ## Capabilities
-1. List issues of a project
+1. List or enumerate issues of a project
 2. Create, load and delete issues
 3. Update some issue fields
     - summary
@@ -59,3 +59,7 @@ support for reading actors per issue
 
 **2.2.0**
 support for querying issue types and server info
+
+**2.3.0**
+ability to enumerate through issues of a project
+ 

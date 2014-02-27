@@ -11,6 +11,11 @@ namespace TechTalk.JiraRestClient
         IEnumerable<Issue> GetIssues(String projectKey);
         /// <summary>Returns all issues of the specified type for the given project</summary>
         IEnumerable<Issue> GetIssues(String projectKey, String issueType);
+        /// <summary>Enumerates through all issues for the given project</summary>
+        IEnumerable<Issue> EnumerateIssues(String projectKey);
+        /// <summary>Enumerates through all issues of the specified type for the given project</summary>
+        IEnumerable<Issue> EnumerateIssues(String projectKey, String issueType);
+
         /// <summary>Returns the issue identified by the given ref</summary>
         Issue LoadIssue(String issueRef);
         /// <summary>Returns the issue identified by the given ref</summary>
@@ -81,12 +86,22 @@ namespace TechTalk.JiraRestClient
 
         public IEnumerable<Issue> GetIssues(String projectKey)
         {
-            return client.GetIssues(projectKey).Select(Issue.From);
+            return client.GetIssues(projectKey).Select(Issue.From).ToArray();
         }
 
         public IEnumerable<Issue> GetIssues(String projectKey, String issueType)
         {
-            return client.GetIssues(projectKey, issueType).Select(Issue.From);
+            return client.GetIssues(projectKey, issueType).Select(Issue.From).ToArray();
+        }
+
+        public IEnumerable<Issue> EnumerateIssues(String projectKey)
+        {
+            return client.EnumerateIssues(projectKey).Select(Issue.From);
+        }
+
+        public IEnumerable<Issue> EnumerateIssues(String projectKey, String issueType)
+        {
+            return client.EnumerateIssues(projectKey, issueType).Select(Issue.From);
         }
 
         public Issue LoadIssue(String issueRef)
