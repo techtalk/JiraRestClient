@@ -72,7 +72,7 @@ namespace TechTalk.JiraRestClient
 
         private IEnumerable<Issue<TIssueFields>> EnumerateIssuesInternal(String projectKey, String issueType)
         {
-            var queryCount = 50;
+            const int queryCount = 50;
             var resultCount = 0;
             while (true)
             {
@@ -92,7 +92,7 @@ namespace TechTalk.JiraRestClient
                 resultCount += issues.Count();
 
                 if (resultCount < data.total) continue;
-                else /* all issues received */ break;
+                break;
             }
         }
 
@@ -101,8 +101,8 @@ namespace TechTalk.JiraRestClient
         {
             if (String.IsNullOrEmpty(issueRef.id))
                 return LoadIssue(issueRef.key);
-            else /* we have an id */
-                return LoadIssue(issueRef.id);
+            
+            return LoadIssue(issueRef.id);
         }
 
         public Issue<TIssueFields> LoadIssue(String issueRef)

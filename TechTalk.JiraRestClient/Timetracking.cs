@@ -1,5 +1,4 @@
-﻿using System;
-using System.Globalization;
+﻿using System.Globalization;
 
 namespace TechTalk.JiraRestClient
 {
@@ -13,7 +12,7 @@ namespace TechTalk.JiraRestClient
         {
             get
             {
-                return (decimal)originalEstimateSeconds / DayToSecFactor;
+                return originalEstimateSeconds / DayToSecFactor;
             }
             set
             {
