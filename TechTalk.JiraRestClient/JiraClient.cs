@@ -72,7 +72,7 @@ namespace TechTalk.JiraRestClient
 
         private IEnumerable<Issue<TIssueFields>> EnumerateIssuesInternal(String projectKey, String issueType)
         {
-            var queryCount = 50;
+            const int queryCount = 50;
             var resultCount = 0;
             while (true)
             {
