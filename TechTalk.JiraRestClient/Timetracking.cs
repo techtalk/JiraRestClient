@@ -12,7 +12,7 @@ namespace TechTalk.JiraRestClient
         {
             get
             {
-                return (decimal)originalEstimateSeconds / DayToSecFactor;
+                return originalEstimateSeconds / DayToSecFactor;
             }
             set
             {
