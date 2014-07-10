@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace TechTalk.JiraRestClient
+﻿namespace TechTalk.JiraRestClient
 {
     internal class RemoteLinkResult
     {
