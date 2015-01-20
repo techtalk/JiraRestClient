@@ -74,6 +74,16 @@ namespace TechTalk.JiraRestClient
 
         /// <summary>Returns information about the JIRA server</summary>
         ServerInfo GetServerInfo();
+
+        /// <summary>Returns changelog for issue</summary>
+        IEnumerable<Change> GetChangeLog(IssueRef issue);
+
+        /// <summary>Returns issues matching JQL query</summary>
+        IEnumerable<Issue> SearchIssues(String jql);
+
+        /// <summary>Returns details for a saved filter</summary>
+        Filter GetFilter(int id);
+
     }
 
     public class JiraClient : IJiraClient
@@ -227,6 +237,21 @@ namespace TechTalk.JiraRestClient
         public ServerInfo GetServerInfo()
         {
             return client.GetServerInfo();
+        }
+
+        public IEnumerable<Change> GetChangeLog(IssueRef issue)
+        {
+            return client.GetChangeLog(issue);
+        }
+
+        public IEnumerable<Issue> SearchIssues(string jql)
+        {
+            return client.SearchIssues(jql).Select(Issue.From); ;
+        }
+
+        public Filter GetFilter(int id)
+        {
+            return client.GetFilter(id);
         }
     }
 

@@ -73,5 +73,14 @@ namespace TechTalk.JiraRestClient
 
         /// <summary>Returns information about the JIRA server</summary>
         ServerInfo GetServerInfo();
+
+        /// <summary>Returns changelog for issue</summary>
+        IEnumerable<Change> GetChangeLog(IssueRef issue);
+
+        /// <summary>Returns issues matching JQL query</summary>
+        IEnumerable<Issue<TIssueFields>> SearchIssues(String jql);
+
+        /// <summary>Returns details for a saved filter</summary>
+        Filter GetFilter(int id);
     }
 }

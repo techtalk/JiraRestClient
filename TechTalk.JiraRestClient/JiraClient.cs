@@ -614,5 +614,83 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("Could not retrieve server information", ex);
             }
         }
+
+        public IEnumerable<Change> GetChangeLog(IssueRef issue)
+        {
+            try
+            {
+                var path = String.Format("issue/{0}?expand=changelog", issue.id);
+                var request = CreateRequest(Method.GET, path);
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<ChangelogContainer>(response);
+                return data.changelog.histories ?? Enumerable.Empty<Change>();
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetTransitions(issue) error: {0}", ex);
+                throw new JiraClientException("Could not load issue transitions", ex);
+            }
+        }
+
+
+        private IEnumerable<Issue<TIssueFields>> SearchIssuesInternal(String jql)
+        {
+            var queryCount = 50;
+            var resultCount = 0;
+            while (true)
+            {
+                var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
+                var request = CreateRequest(Method.GET, path);
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<IssueContainer<TIssueFields>>(response);
+                var issues = data.issues ?? Enumerable.Empty<Issue<TIssueFields>>();
+
+                foreach (var item in issues) yield return item;
+                resultCount += issues.Count();
+
+                if (resultCount < data.total) continue;
+                else /* all issues received */ break;
+            }
+        }
+
+        public IEnumerable<Issue<TIssueFields>> SearchIssues(String jql)
+        {
+            try
+            {
+                return SearchIssuesInternal(jql);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("SearchIssues(jql) error: {0}", ex);
+                throw new JiraClientException("Could not search for issues", ex);
+            }
+        }
+
+        public Filter GetFilter(int id)
+        {
+            try
+            {
+                var path = String.Format("filter/{0}", id);
+                var request = CreateRequest(Method.GET, path);
+
+                var response = client.Execute(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<Filter>(response);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetFilter(id) error: {0}", ex);
+                throw new JiraClientException("Could not get filter", ex);
+            }
+        }
+
     }
 }
