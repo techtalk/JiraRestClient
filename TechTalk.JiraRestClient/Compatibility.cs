@@ -31,7 +31,7 @@ namespace TechTalk.JiraRestClient
         /// <summary>Deletes the given issue from the remote system</summary>
         void DeleteIssue(IssueRef issue);
 
-        /// <summary>Returns all transitions avilable to the given issue</summary>
+        /// <summary>Returns all transitions available to the given issue</summary>
         IEnumerable<Transition> GetTransitions(IssueRef issue);
         /// <summary>Changes the state of the given issue as described by the transition</summary>
         Issue TransitionIssue(IssueRef issue, Transition transition);
