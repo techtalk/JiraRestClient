@@ -63,3 +63,7 @@ support for querying issue types and server info
 **2.3.0**
 ability to enumerate through issues of a project
  
+**2.4.0**
+
+- made the JiraClient thread safe
+- JQL exposed to the client interface via the `GetIssuesByQuery` method
