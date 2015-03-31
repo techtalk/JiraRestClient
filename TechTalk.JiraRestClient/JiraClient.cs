@@ -112,10 +112,7 @@ namespace TechTalk.JiraRestClient
 
         public Issue<TIssueFields> LoadIssue(IssueRef issueRef)
         {
-            if (String.IsNullOrEmpty(issueRef.id))
-                return LoadIssue(issueRef.key);
-            else /* we have an id */
-                return LoadIssue(issueRef.id);
+            return LoadIssue(issueRef.JiraIdentifier);
         }
 
         public Issue<TIssueFields> LoadIssue(String issueRef)
@@ -192,7 +189,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}", issue.id);
+                var path = String.Format("issue/{0}", issue.JiraIdentifier);
                 var request = CreateRequest(Method.PUT, path);
                 request.AddHeader("ContentType", "application/json");
 
