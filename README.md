@@ -67,3 +67,6 @@ ability to enumerate through issues of a project
 
 - made the JiraClient thread safe
 - JQL exposed to the client interface via the `GetIssuesByQuery` method
+
+**2.4.1**
+use internal property JiraIdentifier on LoadIssue and UpdateIssue
