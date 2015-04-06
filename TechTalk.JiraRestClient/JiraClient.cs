@@ -88,11 +88,20 @@ namespace TechTalk.JiraRestClient
             var resultCount = 0;
             while (true)
             {
-                var jql = String.Format("project={0}", Uri.EscapeUriString(projectKey));
+                var criteria = new List<string>();
+
+                if (!String.IsNullOrWhiteSpace(projectKey))
+                    criteria.Add(String.Format("project={0}", Uri.EscapeUriString(projectKey)));
                 if (!String.IsNullOrEmpty(issueType))
-                    jql += String.Format("+AND+issueType={0}", Uri.EscapeUriString(issueType));
+                    criteria.Add(String.Format("issueType={0}", Uri.EscapeUriString(issueType)));
                 if (!String.IsNullOrEmpty(jqlQuery))
-                    jql += String.Format("+AND+{0}", Uri.EscapeUriString(jqlQuery));
+                    criteria.Add(Uri.EscapeUriString(jqlQuery));
+
+                if (criteria.Count == 0)
+                    throw new JiraClientException("Could not enumerate issues due to missing filtering criteria");
+
+                var jql = String.Join("+AND+", criteria);
+
                 var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
                 var request = CreateRequest(Method.GET, path);
 
