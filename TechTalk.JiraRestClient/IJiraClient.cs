@@ -6,12 +6,17 @@ namespace TechTalk.JiraRestClient
 {
     public interface IJiraClient<TIssueFields> where TIssueFields : IssueFields, new()
     {
+        /// <summary>Maximum items that should be returned with each request.</summary>
+        int MaxItemsPerRequest { get; set; }
+
         /// <summary>Returns all issues for the given project</summary>
         IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey);
         /// <summary>Returns all issues of the specified type for the given project</summary>
         IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey, String issueType);
         /// <summary>Returns all issues of the given type and the given project filtered by the given JQL query</summary>
-        IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(String projectKey, String issueType, String jqlQuery);
+        IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(String projectKey, String issueType, int startAt = 0);
+        /// <summary>Returns all issues of the given type and the given project filtered by the given JQL query</summary>
+        IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(String jqlQuery, int startAt = 0);
         /// <summary>Enumerates through all issues for the given project</summary>
         IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey);
         /// <summary>Enumerates through all issues of the specified type for the given project</summary>
