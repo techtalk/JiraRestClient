@@ -12,7 +12,9 @@ namespace TechTalk.JiraRestClient
         /// <summary>Returns all issues of the specified type for the given project</summary>
         IEnumerable<Issue> GetIssues(String projectKey, String issueType);
         /// <summary>Returns all issues of the given type and the given project filtered by the given JQL query</summary>
-        IEnumerable<Issue> GetIssuesByQuery(String projectKey, String issueType, String jqlQuery);
+        IEnumerable<Issue> GetIssuesByQuery(String projectKey, String issueType, int startAt = 0);
+        /// <summary>Returns all issues of the given type and the given project filtered by the given JQL query</summary>
+        IEnumerable<Issue> GetIssuesByQuery(String jqlQuery, int startAt = 0);
         /// <summary>Enumerates through all issues for the given project</summary>
         IEnumerable<Issue> EnumerateIssues(String projectKey);
         /// <summary>Enumerates through all issues of the specified type for the given project</summary>
@@ -96,9 +98,14 @@ namespace TechTalk.JiraRestClient
             return client.GetIssues(projectKey, issueType).Select(Issue.From).ToArray();
         }
 
-        public IEnumerable<Issue> GetIssuesByQuery(string projectKey, string issueType, string jqlQuery)
+        public IEnumerable<Issue> GetIssuesByQuery(string projectKey, string issueType, int startAt = 0)
         {
-            return client.GetIssuesByQuery(projectKey, issueType, jqlQuery).Select(Issue.From).ToArray();
+            return client.GetIssuesByQuery(projectKey, issueType, startAt).Select(Issue.From).ToArray();
+        }
+
+        public IEnumerable<Issue> GetIssuesByQuery(string jqlQuery, int startAt = 0)
+        {
+            return client.GetIssuesByQuery(jqlQuery, startAt).Select(Issue.From).ToArray();
         }
 
         public IEnumerable<Issue> EnumerateIssues(String projectKey)
