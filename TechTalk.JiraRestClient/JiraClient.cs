@@ -605,6 +605,55 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("Could not load issue types", ex);
             }
         }
+        /// <summary>
+        /// Gets all statuses
+        /// </summary>
+        /// <returns>Return all statuses</returns>
+        public IEnumerable<Status> GetStatuses()
+        {
+            try
+            {
+                var request = CreateRequest(Method.GET, "status");
+                request.AddHeader("ContentType", "application/json");
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<List<Status>>(response);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetStatuses() error: {0}", ex);
+                throw new JiraClientException("Could not load statuses", ex);
+            }
+        }
+
+        /// <summary>
+        /// Gets a given project
+        /// </summary>
+        /// <param name="projectKey">Project to return.</param>
+        /// <returns>Gets a given project.</returns>
+        public Project GetProject(String projectKey)
+        {
+            try
+            {
+                var path = string.Format("project/{0}", projectKey);
+                var request = CreateRequest(Method.GET, path);
+                request.AddHeader("ContentType", "application/json");
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<Project>(response);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetProject() error: {0}", ex);
+                throw new JiraClientException("Could not load project", ex);
+            }
+        }
 
         public ServerInfo GetServerInfo()
         {
