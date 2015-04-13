@@ -10,6 +10,11 @@ using RestSharp.Deserializers;
 
 namespace TechTalk.JiraRestClient
 {
+    using System.Diagnostics.Eventing.Reader;
+    using System.Reflection;
+
+    using RestSharp.Extensions;
+
     //JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
 
     public class JiraClient<TIssueFields> : IJiraClient<TIssueFields> where TIssueFields : IssueFields, new()
@@ -147,7 +152,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var request = CreateRequest(Method.POST, "issue");
+                var request = this.CreateRequest(Method.POST, "issue");
                 request.AddHeader("ContentType", "application/json");
 
                 var issueData = new Dictionary<string, object>();
@@ -163,11 +168,21 @@ namespace TechTalk.JiraRestClient
                 if (issueFields.timetracking != null)
                     issueData.Add("timetracking", new { originalEstimate = issueFields.timetracking.originalEstimate });
 
-                var propertyList = typeof(TIssueFields).GetProperties().Where(p => p.Name.StartsWith("customfield_"));
-                foreach (var property in propertyList)
+                var propertyInfos = typeof(TIssueFields).GetProperties().ToArray();
+                var propertiesFromAttribute = propertyInfos.Select(p => new { Property = p, FieldAttribute = p.GetAttribute<FieldAttribute>() })
+                    .Where(a => a.FieldAttribute != null)
+                    .Select(p => new NamedProperty(p.Property, p.FieldAttribute.FieldName));
+
+                var customFields = propertyInfos.Where(p => p.Name.StartsWith("customfield_")).Select(p => new NamedProperty(p, p.Name));
+                var propertyList = customFields.Concat(propertiesFromAttribute);
+
+                foreach (var namedProperty in propertyList)
                 {
-                    var value = property.GetValue(issueFields, null);
-                    if (value != null) issueData.Add(property.Name, value);
+                    var value = namedProperty.Property.GetValue(issueFields, null);
+                    if (value != null)
+                    {
+                        issueData.Add(namedProperty.FieldName, value);
+                    }
                 }
 
                 request.AddBody(new { fields = issueData });
@@ -623,6 +638,19 @@ namespace TechTalk.JiraRestClient
                 Trace.TraceError("GetServerInfo() error: {0}", ex);
                 throw new JiraClientException("Could not retrieve server information", ex);
             }
+        }
+    }
+
+    public class NamedProperty
+    {
+        public PropertyInfo Property { get; set; }
+
+        public string FieldName { get; set; }
+
+        public NamedProperty(PropertyInfo property, string fieldName)
+        {
+            this.Property = property;
+            this.FieldName = fieldName;
         }
     }
 }
