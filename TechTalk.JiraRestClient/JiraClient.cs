@@ -5,14 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
-
 using RestSharp;
 using RestSharp.Deserializers;
 using RestSharp.Extensions;
 
 namespace TechTalk.JiraRestClient
 {
-    // JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
+    //JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
+
     public class JiraClient<TIssueFields> : IJiraClient<TIssueFields> where TIssueFields : IssueFields, new()
     {
         private readonly string username;
@@ -148,7 +148,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var request = this.CreateRequest(Method.POST, "issue");
+                var request = CreateRequest(Method.POST, "issue");
                 request.AddHeader("ContentType", "application/json");
 
                 var issueData = new Dictionary<string, object>();
