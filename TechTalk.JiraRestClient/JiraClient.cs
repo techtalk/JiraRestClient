@@ -5,18 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+
 using RestSharp;
 using RestSharp.Deserializers;
+using RestSharp.Extensions;
 
 namespace TechTalk.JiraRestClient
 {
-    using System.Diagnostics.Eventing.Reader;
-    using System.Reflection;
-
-    using RestSharp.Extensions;
-
-    //JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
-
+    // JIRA REST API documentation: https://docs.atlassian.com/jira/REST/latest
     public class JiraClient<TIssueFields> : IJiraClient<TIssueFields> where TIssueFields : IssueFields, new()
     {
         private readonly string username;
@@ -638,19 +634,6 @@ namespace TechTalk.JiraRestClient
                 Trace.TraceError("GetServerInfo() error: {0}", ex);
                 throw new JiraClientException("Could not retrieve server information", ex);
             }
-        }
-    }
-
-    public class NamedProperty
-    {
-        public PropertyInfo Property { get; set; }
-
-        public string FieldName { get; set; }
-
-        public NamedProperty(PropertyInfo property, string fieldName)
-        {
-            this.Property = property;
-            this.FieldName = fieldName;
         }
     }
 }
