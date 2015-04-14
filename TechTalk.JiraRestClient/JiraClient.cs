@@ -164,21 +164,22 @@ namespace TechTalk.JiraRestClient
                 if (issueFields.timetracking != null)
                     issueData.Add("timetracking", new { originalEstimate = issueFields.timetracking.originalEstimate });
 
-                var propertyInfos = typeof(TIssueFields).GetProperties().ToArray();
-                var propertiesFromAttribute = propertyInfos.Select(p => new { Property = p, FieldAttribute = p.GetAttribute<FieldAttribute>() })
+                var propertyInfos = typeof(TIssueFields).GetProperties();
+                var propertiesFromAttribute = propertyInfos
+                    .Select(p => new { Property = p, FieldAttribute = p.GetAttribute<FieldAttribute>() })
                     .Where(a => a.FieldAttribute != null)
                     .Select(p => new NamedProperty(p.Property, p.FieldAttribute.FieldName));
 
-                var customFields = propertyInfos.Where(p => p.Name.StartsWith("customfield_")).Select(p => new NamedProperty(p, p.Name));
+                var customFields = propertyInfos
+                    .Where(p => p.Name.StartsWith("customfield_"))
+                    .Select(p => new NamedProperty(p, p.Name));
+
                 var propertyList = customFields.Concat(propertiesFromAttribute);
 
                 foreach (var namedProperty in propertyList)
                 {
                     var value = namedProperty.Property.GetValue(issueFields, null);
-                    if (value != null)
-                    {
-                        issueData.Add(namedProperty.FieldName, value);
-                    }
+                    if (value != null) issueData.Add(namedProperty.FieldName, value);
                 }
 
                 request.AddBody(new { fields = issueData });
