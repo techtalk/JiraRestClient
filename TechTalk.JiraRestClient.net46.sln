@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.22609.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DD1DD4D1-C257-456A-8690-F3A735D74AC1}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		TechTalk.JiraRestClient.nuspec = TechTalk.JiraRestClient.nuspec
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.JiraRestClient", "TechTalk.JiraRestClient\TechTalk.JiraRestClient.csproj", "{210529FA-454E-4C32-A2C8-353ECBD4DA05}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TechTalk.JiraRestClient.Shared", "TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.shproj", "{4EEA9184-F9FA-4B20-80E1-CAD6A764D12E}"
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems*{4eea9184-f9fa-4b20-80e1-cad6a764d12e}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{210529FA-454E-4C32-A2C8-353ECBD4DA05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210529FA-454E-4C32-A2C8-353ECBD4DA05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210529FA-454E-4C32-A2C8-353ECBD4DA05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210529FA-454E-4C32-A2C8-353ECBD4DA05}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
