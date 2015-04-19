@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)JiraClient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JiraClientException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)JiraUser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RemoteLink.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RemoteLinkResult.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ServerInfo.cs" />
