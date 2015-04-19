@@ -50,5 +50,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
   </ItemGroup>
+  <Import Project="..\..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems" Label="Shared" Condition="Exists('..\..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
 </Project>
