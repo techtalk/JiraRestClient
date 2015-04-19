@@ -8,3 +8,6 @@ packages/
 
 # VS2015 stuff
 .vs
+
+# Xamarin stuff
+*.userprefs
