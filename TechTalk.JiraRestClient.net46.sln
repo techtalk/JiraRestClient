@@ -11,12 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DD1DD4
 		TechTalk.JiraRestClient.nuspec = TechTalk.JiraRestClient.nuspec
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.JiraRestClient", "TechTalk.JiraRestClient\TechTalk.JiraRestClient.csproj", "{210529FA-454E-4C32-A2C8-353ECBD4DA05}"
-EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TechTalk.JiraRestClient.Shared", "TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.shproj", "{4EEA9184-F9FA-4B20-80E1-CAD6A764D12E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.JiraRestClient.net46", "targets\net46\TechTalk.JiraRestClient.net46.csproj", "{210529FA-454E-4C32-A2C8-353ECBD4DA05}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems*{210529fa-454e-4c32-a2c8-353ecbd4da05}*SharedItemsImports = 4
 		TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems*{4eea9184-f9fa-4b20-80e1-cad6a764d12e}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
