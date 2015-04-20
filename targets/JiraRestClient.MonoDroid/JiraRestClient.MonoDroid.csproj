@@ -52,4 +52,10 @@
   </ItemGroup>
   <Import Project="..\..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems" Label="Shared" Condition="Exists('..\..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems')" />
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\ext\RestSharp\RestSharp.Android\RestSharp.Android.csproj">
+      <Project>{1B662C38-984F-4B6A-89B5-AFF7FCBE43A2}</Project>
+      <Name>RestSharp.Android</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
