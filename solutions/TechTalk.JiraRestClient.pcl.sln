@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DD1DD4
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TechTalk.JiraRestClient.Shared", "..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.shproj", "{4EEA9184-F9FA-4B20-80E1-CAD6A764D12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.JiraRestClient.pcl", "..\targets\TechTalk.JiraRestClient\pcl\TechTalk.JiraRestClient.pcl.csproj", "{2518C36A-6117-42BB-AD91-36CEA2090F5D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.JiraRestClient.pcl", "..\targets\pcl\TechTalk.JiraRestClient.pcl.csproj", "{2518C36A-6117-42BB-AD91-36CEA2090F5D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
