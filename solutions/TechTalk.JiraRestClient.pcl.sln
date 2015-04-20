@@ -13,11 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{DD1DD4
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TechTalk.JiraRestClient.Shared", "..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.shproj", "{4EEA9184-F9FA-4B20-80E1-CAD6A764D12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.JiraRestClient.pcl", "..\targets\pcl\TechTalk.JiraRestClient.pcl.csproj", "{210529FA-454E-4C32-A2C8-353ECBD4DA05}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechTalk.JiraRestClient.pcl", "..\targets\TechTalk.JiraRestClient\pcl\TechTalk.JiraRestClient.pcl.csproj", "{2518C36A-6117-42BB-AD91-36CEA2090F5D}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems*{210529fa-454e-4c32-a2c8-353ecbd4da05}*SharedItemsImports = 4
+		..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems*{2518c36a-6117-42bb-ad91-36cea2090f5d}*SharedItemsImports = 4
 		..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.projitems*{4eea9184-f9fa-4b20-80e1-cad6a764d12e}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +25,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{210529FA-454E-4C32-A2C8-353ECBD4DA05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{210529FA-454E-4C32-A2C8-353ECBD4DA05}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{210529FA-454E-4C32-A2C8-353ECBD4DA05}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{210529FA-454E-4C32-A2C8-353ECBD4DA05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2518C36A-6117-42BB-AD91-36CEA2090F5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2518C36A-6117-42BB-AD91-36CEA2090F5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2518C36A-6117-42BB-AD91-36CEA2090F5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2518C36A-6117-42BB-AD91-36CEA2090F5D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
