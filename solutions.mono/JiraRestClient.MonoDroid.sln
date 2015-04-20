@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JiraRestClient.MonoDroid", "..\..\targets\JiraRestClient.MonoDroid\JiraRestClient.MonoDroid.csproj", "{413C9F74-7690-41A8-AA1F-B91FE5BE8EDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JiraRestClient.MonoDroid", "..\targets\JiraRestClient.MonoDroid\JiraRestClient.MonoDroid.csproj", "{413C9F74-7690-41A8-AA1F-B91FE5BE8EDE}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TechTalk.JiraRestClient.Shared", "..\..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.shproj", "{4EEA9184-F9FA-4B20-80E1-CAD6A764D12E}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "TechTalk.JiraRestClient.Shared", "..\TechTalk.JiraRestClient\TechTalk.JiraRestClient.Shared.shproj", "{4EEA9184-F9FA-4B20-80E1-CAD6A764D12E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestSharp.Android", "..\..\ext\RestSharp\RestSharp.Android\RestSharp.Android.csproj", "{1B662C38-984F-4B6A-89B5-AFF7FCBE43A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RestSharp.Android", "..\ext\RestSharp\RestSharp.Android\RestSharp.Android.csproj", "{1B662C38-984F-4B6A-89B5-AFF7FCBE43A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
