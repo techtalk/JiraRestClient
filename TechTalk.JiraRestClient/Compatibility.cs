@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using RestSharp;
 
 namespace TechTalk.JiraRestClient
 {
@@ -81,9 +82,15 @@ namespace TechTalk.JiraRestClient
     public class JiraClient : IJiraClient
     {
         private readonly IJiraClient<IssueFields> client;
+
         public JiraClient(string baseUrl, string username, string password)
         {
             client = new JiraClient<IssueFields>(baseUrl, username, password);
+        }
+
+        public JiraClient(string baseUrl, IAuthenticator authenticator)
+        {
+            client = new JiraClient<IssueFields>(baseUrl, authenticator);
         }
 
         public IEnumerable<Issue> GetIssues(String projectKey)
