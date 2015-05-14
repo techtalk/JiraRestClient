@@ -75,5 +75,8 @@ namespace TechTalk.JiraRestClient
 
         /// <summary>Returns information about the JIRA server</summary>
         ServerInfo GetServerInfo();
+
+        /// <summary>Gets all the versions for a project</summary>
+        IEnumerable<ProjectVersion> GetVersions(String projectKey);
     }
 }

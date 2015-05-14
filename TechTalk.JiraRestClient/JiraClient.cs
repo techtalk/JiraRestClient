@@ -624,5 +624,24 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("Could not retrieve server information", ex);
             }
         }
+
+        public IEnumerable<ProjectVersion> GetVersions(String projectKey)
+        {
+            try
+            {
+                var path = String.Format("project/{0}/versions",Uri.EscapeUriString(projectKey));
+                var request = CreateRequest(Method.GET, path);
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                return deserializer.Deserialize<List<ProjectVersion>>(response);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetVersions(projectKey) error: {0}", ex);
+                throw new JiraClientException("Could not load project version", ex);
+            }
+        }
     }
 }
