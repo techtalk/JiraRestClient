@@ -12,6 +12,7 @@ namespace TechTalk.JiraRestClient
 
             labels = new List<String>();
             comments = new List<Comment>();
+            worklogs = new List<Worklog>();
             issuelinks = new List<IssueLink>();
             attachment = new List<Attachment>();
             watchers = new List<JiraUser>();
@@ -24,10 +25,11 @@ namespace TechTalk.JiraRestClient
 
         public JiraUser reporter { get; set; }
         public JiraUser assignee { get; set; }
-        public List<JiraUser> watchers { get; set; } 
+        public List<JiraUser> watchers { get; set; }
 
         public List<String> labels { get; set; }
         public List<Comment> comments { get; set; }
+        public List<Worklog> worklogs { get; set; }
         public List<IssueLink> issuelinks { get; set; }
         public List<Attachment> attachment { get; set; }
     }

@@ -45,6 +45,16 @@ namespace TechTalk.JiraRestClient
         /// <summary>Deletes the given comment</summary>
         void DeleteComment(IssueRef issue, Comment comment);
 
+        /// <summary>Returns all worklogs for the given issue</summary>
+        IEnumerable<Worklog> GetWorklogs(IssueRef issue);
+
+        /// <summary>Adds a worklog to the given issue</summary>
+        Worklog CreateWorklog(IssueRef issue, int timespentSeconds, string comment, DateTime started);
+        /// <summary>Update a worklog to the given issue</summary>
+        Worklog UpdateWorklog(IssueRef issue, Worklog worklog);
+        /// <summary>Delete a worklog to the given issue</summary>
+        void DeleteWorklog(IssueRef issue, Worklog worklog);
+
         /// <summary>Return all attachments for the given issue</summary>
         IEnumerable<Attachment> GetAttachments(IssueRef issue);
         /// <summary>Creates an attachment to the given issue</summary>

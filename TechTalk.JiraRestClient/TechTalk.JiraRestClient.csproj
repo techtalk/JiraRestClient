@@ -60,6 +60,8 @@
     <Compile Include="Transition.cs" />
     <Compile Include="Timetracking.cs" />
     <Compile Include="TransitionsContainer.cs" />
+    <Compile Include="Worklog.cs" />
+    <Compile Include="WorklogsContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
