@@ -40,5 +40,7 @@ namespace TechTalk.JiraRestClient
 
         public Resolution resolution { get; set; }
         public DateTime? resolutiondate { get; set; }
+
+        public Priority priority { get; set; }
     }
 }
