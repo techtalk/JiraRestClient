@@ -14,15 +14,19 @@ namespace TechTalk.JiraRestClient
 
     public class JiraClient<TIssueFields> : IJiraClient<TIssueFields> where TIssueFields : IssueFields, new()
     {
-        private readonly string username;
-        private readonly string password;
+        private readonly string auth;
         private readonly JsonDeserializer deserializer;
         private readonly string baseApiUrl;
         public JiraClient(string baseUrl, string username, string password)
         {
-            this.username = username;
-            this.password = password;
-            
+            baseApiUrl = new Uri(new Uri(baseUrl), "rest/api/2/").ToString();
+            auth = Convert.ToBase64String(Encoding.UTF8.GetBytes(String.Format("{0}:{1}", username, password)));
+            deserializer = new JsonDeserializer();
+        }
+
+        public JiraClient(string baseUrl, string authstring)
+        {
+            auth = authstring;
             baseApiUrl = new Uri(new Uri(baseUrl), "rest/api/2/").ToString();
             deserializer = new JsonDeserializer();
         }
@@ -30,7 +34,7 @@ namespace TechTalk.JiraRestClient
         private RestRequest CreateRequest(Method method, String path)
         {
             var request = new RestRequest { Method = method, Resource = path, RequestFormat = DataFormat.Json, DateFormat = "yyyy-MM-ddTHH:mm:ss.fffzz00" };
-            request.AddHeader("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(String.Format("{0}:{1}", username, password))));
+            request.AddHeader("Authorization", String.Format("Basic {0}", auth));
             return request;
         }
 
