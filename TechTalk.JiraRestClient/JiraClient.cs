@@ -52,6 +52,26 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("JIRA returned wrong status: " + response.StatusDescription, response.Content);
         }
 
+        public JiraUser GetLoggedInUser()
+        {
+            try
+            {
+                var path = "myself";
+                var request = CreateRequest(Method.GET, path);
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var jiraUser = deserializer.Deserialize<JiraUser>(response);
+                return jiraUser;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetLoggedInUser() error: {0}", ex);
+                throw new JiraClientException("Could not load user", ex);
+            }
+        }
+
 
         public IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey)
         {
