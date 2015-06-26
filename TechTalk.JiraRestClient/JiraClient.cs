@@ -378,7 +378,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/attachments", issue.id);
+                var path = String.Format("issue/{0}/attachments", issue.JiraIdentifier);
                 var request = CreateRequest(Method.POST, path);
                 request.AddHeader("X-Atlassian-Token", "nocheck");
                 request.AddHeader("ContentType", "multipart/form-data");

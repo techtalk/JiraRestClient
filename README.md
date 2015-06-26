@@ -70,3 +70,6 @@ ability to enumerate through issues of a project
 
 **2.4.1**
 use internal property JiraIdentifier on LoadIssue and UpdateIssue
+
+**2.4.2**
+use internal property JiraIdentifier on CreateAttachment
