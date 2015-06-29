@@ -38,6 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attachment.cs" />
+    <Compile Include="AvatarUrls.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="CommentsContainer.cs" />
     <Compile Include="Compatibility.cs" />
