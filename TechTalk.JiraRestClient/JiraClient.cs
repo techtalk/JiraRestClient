@@ -88,6 +88,11 @@ namespace TechTalk.JiraRestClient
             return EnumerateIssuesInternal(projectKey, issueType, jqlQuery);
         }
 
+        public IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(string jqlQuery)
+        {
+            return EnumerateIssuesInternal("", "", jqlQuery);
+        }
+
         public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey)
         {
             return EnumerateIssues(projectKey, null);
@@ -717,6 +722,28 @@ namespace TechTalk.JiraRestClient
             {
                 Trace.TraceError("GetIssueTypes() error: {0}", ex);
                 throw new JiraClientException("Could not load issue types", ex);
+            }
+        }
+
+        public JiraUser GetUser(string username)
+        {
+            try
+            {
+                var path = string.Format("user?username={0}", username);
+                var request = CreateRequest(Method.POST, path);
+                request.AddHeader("ContentType", "application/json");
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<JiraUser>(response);
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetUser({0}) error: {1}", username, ex);
+                throw new JiraClientException("Could not load user", ex);
             }
         }
 
