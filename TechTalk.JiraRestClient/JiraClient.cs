@@ -66,14 +66,19 @@ namespace TechTalk.JiraRestClient
 
         public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey)
         {
-            return EnumerateIssues(projectKey, null);
+            return EnumerateIssues(projectKey, null, null);
         }
 
         public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey, String issueType)
         {
+            return EnumerateIssues(projectKey, issueType, null);
+        }
+
+        public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey, String issueType, String fields)
+        {
             try
             {
-                return EnumerateIssuesInternal(projectKey, issueType);
+                return EnumerateIssuesInternal(projectKey, issueType, fields);
             }
             catch (Exception ex)
             {
@@ -82,7 +87,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        private IEnumerable<Issue<TIssueFields>> EnumerateIssuesInternal(String projectKey, String issueType, String jqlQuery = null)
+        private IEnumerable<Issue<TIssueFields>> EnumerateIssuesInternal(String projectKey, String issueType, String fields = null, String jqlQuery = null)
         {
             var queryCount = 50;
             var resultCount = 0;
@@ -94,6 +99,9 @@ namespace TechTalk.JiraRestClient
                 if (!String.IsNullOrEmpty(jqlQuery))
                     jql += String.Format("+AND+{0}", Uri.EscapeUriString(jqlQuery));
                 var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
+                if (!String.IsNullOrEmpty(fields))
+                    path += String.Format("&fields={0}", fields);
+
                 var request = CreateRequest(Method.GET, path);
 
                 var response = ExecuteRequest(request);

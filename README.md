@@ -73,3 +73,6 @@ use internal property JiraIdentifier on LoadIssue and UpdateIssue
 
 **2.4.2**
 use internal property JiraIdentifier on CreateAttachment
+
+**2.5.0**
+ability to specify the list of fields returned by the `EnumerateIssues` method
