@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>4eea9184-f9fa-4b20-80e1-cad6a764d12e</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>TechTalk.JiraRestClient.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Attachment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Comment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CommentsContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Compatibility.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IJiraClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Issue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IssueContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IssueFields.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IssueLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IssueRef.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IssueType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JiraClient.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JiraClientException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JiraUser.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Properties\AssemblyInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteLink.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RemoteLinkResult.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ServerInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Status.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Timetracking.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Transition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TransitionsContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)WatchersContainer.cs" />
+  </ItemGroup>
+</Project>

@@ -5,3 +5,9 @@ packages/
 *.suo
 *.log
 *.nupkg
+
+# VS2015 stuff
+.vs
+
+# Xamarin stuff
+*.userprefs

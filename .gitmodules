@@ -1,0 +1,3 @@
+[submodule "ext/RestSharp"]
+	path = ext/RestSharp
+	url = https://github.com/restsharp/RestSharp
