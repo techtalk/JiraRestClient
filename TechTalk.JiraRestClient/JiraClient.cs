@@ -162,6 +162,10 @@ namespace TechTalk.JiraRestClient
                 issueData.Add("project", new { key = projectKey });
                 issueData.Add("issuetype", new { name = issueType });
 
+                if (issueFields.assignee != null)
+                    issueData.Add("assignee", issueFields.assignee);
+                if (issueFields.reporter != null)
+                    issueData.Add("reporter", issueFields.reporter);
                 if (issueFields.summary != null)
                     issueData.Add("summary", issueFields.summary);
                 if (issueFields.description != null)
