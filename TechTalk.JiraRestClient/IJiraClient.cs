@@ -6,12 +6,17 @@ namespace TechTalk.JiraRestClient
 {
     public interface IJiraClient<TIssueFields> where TIssueFields : IssueFields, new()
     {
+        /// <summary>Returns current logged in user</summary>
+        JiraUser GetLoggedInUser();
+
         /// <summary>Returns all issues for the given project</summary>
         IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey);
         /// <summary>Returns all issues of the specified type for the given project</summary>
         IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey, String issueType);
         /// <summary>Returns all issues of the given type and the given project filtered by the given JQL query</summary>
         IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(String projectKey, String issueType, String jqlQuery);
+        /// <summary>Returns all issues filtered by only the given JQL query</summary>
+        IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(String jqlQuery);
         /// <summary>Enumerates through all issues for the given project</summary>
         IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey);
         /// <summary>Enumerates through all issues of the specified type for the given project</summary>
@@ -47,6 +52,16 @@ namespace TechTalk.JiraRestClient
         /// <summary>Deletes the given comment</summary>
         void DeleteComment(IssueRef issue, Comment comment);
 
+        /// <summary>Returns all worklogs for the given issue</summary>
+        IEnumerable<Worklog> GetWorklogs(IssueRef issue);
+
+        /// <summary>Adds a worklog to the given issue</summary>
+        Worklog CreateWorklog(IssueRef issue, int timespentSeconds, string comment, DateTime started);
+        /// <summary>Update a worklog to the given issue</summary>
+        Worklog UpdateWorklog(IssueRef issue, Worklog worklog);
+        /// <summary>Delete a worklog to the given issue</summary>
+        void DeleteWorklog(IssueRef issue, Worklog worklog);
+
         /// <summary>Return all attachments for the given issue</summary>
         IEnumerable<Attachment> GetAttachments(IssueRef issue);
         /// <summary>Creates an attachment to the given issue</summary>
@@ -74,6 +89,8 @@ namespace TechTalk.JiraRestClient
 
         /// <summary>Returns all issue types</summary>
         IEnumerable<IssueType> GetIssueTypes();
+
+        JiraUser GetUser(string username);
 
         /// <summary>Returns information about the JIRA server</summary>
         ServerInfo GetServerInfo();
