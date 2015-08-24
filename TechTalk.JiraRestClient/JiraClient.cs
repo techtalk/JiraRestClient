@@ -22,7 +22,7 @@ namespace TechTalk.JiraRestClient
         {
             this.username = username;
             this.password = password;
-            
+
             baseApiUrl = new Uri(new Uri(baseUrl), "rest/api/2/").ToString();
             deserializer = new JsonDeserializer();
         }
@@ -61,7 +61,24 @@ namespace TechTalk.JiraRestClient
 
         public IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(string projectKey, string issueType, string jqlQuery)
         {
-            return EnumerateIssuesInternal(projectKey, issueType, jqlQuery);
+            return EnumerateIssuesInternal(projectKey, issueType, null, jqlQuery);
+        }
+
+        public IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(string jqlQuery, string fields)
+        {
+            return EnumerateIssuesInternal(null, null, fields, jqlQuery);
+        }
+
+        public int GetIssueCountByQuery(string jqlQuery)
+        {
+            var request = CreateRequest(Method.GET,
+                String.Format("search?jql={0}&maxResults=0&fields=Key", Uri.EscapeUriString(jqlQuery)));
+
+            var response = ExecuteRequest(request);
+            AssertStatus(response, HttpStatusCode.OK);
+
+            var data = deserializer.Deserialize<IssueContainer<TIssueFields>>(response);
+            return data.total;
         }
 
         public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey)
@@ -87,18 +104,33 @@ namespace TechTalk.JiraRestClient
             }
         }
 
+        private StringBuilder appendDelimited(StringBuilder builder, String whatToAdd, String delim)
+        {
+            if (String.IsNullOrEmpty(whatToAdd)){
+                return builder;
+            }
+
+            if (builder.Length != 0){
+                builder.Append(delim);
+            }
+            builder.Append(whatToAdd);
+            return builder;
+        }
+
         private IEnumerable<Issue<TIssueFields>> EnumerateIssuesInternal(String projectKey, String issueType, String fields = null, String jqlQuery = null)
         {
             var queryCount = 50;
             var resultCount = 0;
             while (true)
             {
-                var jql = String.Format("project={0}", Uri.EscapeUriString(projectKey));
+                StringBuilder builder = new StringBuilder();
+                if (!String.IsNullOrEmpty(projectKey))
+                    appendDelimited(builder, String.Format("project={0}", Uri.EscapeUriString(projectKey)), "+AND+");
                 if (!String.IsNullOrEmpty(issueType))
-                    jql += String.Format("+AND+issueType={0}", Uri.EscapeUriString(issueType));
+                    appendDelimited(builder, String.Format("issueType={0}", Uri.EscapeUriString(issueType)), "+AND+");
                 if (!String.IsNullOrEmpty(jqlQuery))
-                    jql += String.Format("+AND+{0}", Uri.EscapeUriString(jqlQuery));
-                var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
+                    appendDelimited(builder, Uri.EscapeUriString(jqlQuery), "+AND+");
+                var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", builder.ToString(), resultCount, queryCount);
                 if (!String.IsNullOrEmpty(fields))
                     path += String.Format("&fields={0}", fields);
 

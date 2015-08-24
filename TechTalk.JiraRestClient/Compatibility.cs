@@ -103,6 +103,16 @@ namespace TechTalk.JiraRestClient
             return client.GetIssuesByQuery(projectKey, issueType, jqlQuery).Select(Issue.From).ToArray();
         }
 
+        public IEnumerable<Issue> GetIssuesByQuery(string jqlQuery, string fields)
+        {
+            return client.GetIssuesByQuery(jqlQuery, fields).Select(Issue.From).ToArray();
+        }
+
+        public int GetIssueCountByQuery(string jqlQuery)
+        {
+            return client.GetIssueCountByQuery(jqlQuery);
+        }
+
         public IEnumerable<Issue> EnumerateIssues(String projectKey)
         {
             return client.EnumerateIssues(projectKey).Select(Issue.From);
