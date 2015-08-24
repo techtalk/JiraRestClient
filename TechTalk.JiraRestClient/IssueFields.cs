@@ -8,6 +8,7 @@ namespace TechTalk.JiraRestClient
         public IssueFields()
         {
             status = new Status();
+            priority = new Priority();
             timetracking = new Timetracking();
 
             labels = new List<String>();
@@ -21,6 +22,7 @@ namespace TechTalk.JiraRestClient
         public String description { get; set; }
         public Timetracking timetracking { get; set; }
         public Status status { get; set; }
+        public Priority priority { get; set; }
 
         public JiraUser reporter { get; set; }
         public JiraUser assignee { get; set; }
