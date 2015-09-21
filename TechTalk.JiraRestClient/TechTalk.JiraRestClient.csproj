@@ -37,6 +37,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\JiraIssueCollection\JiraIssueCollection\Impl\QueryableIssueCollection.cs">
+      <Link>QueryableIssueCollection.cs</Link>
+    </Compile>
     <Compile Include="Attachment.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="CommentsContainer.cs" />

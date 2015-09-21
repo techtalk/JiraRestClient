@@ -1,0 +1,3 @@
+[submodule "JiraIssueCollection"]
+	path = JiraIssueCollection
+	url = https://github.com/quexy/JiraIssueCollection

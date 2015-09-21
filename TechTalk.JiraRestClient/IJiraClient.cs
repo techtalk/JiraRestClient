@@ -17,6 +17,8 @@ namespace TechTalk.JiraRestClient
         IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey, String issueType);
         /// <summary>Enumerates through all issues filtered by the specified jqlQuery starting form the specified startIndex</summary>
         IEnumerable<Issue<TIssueFields>> EnumerateIssuesByQuery(String jqlQuery, String[] fields, Int32 startIndex);
+        /// <summary>Returns a query provider for this JIRA connection</summary>
+        IQueryable<Issue<TIssueFields>> QueryIssues();
 
         /// <summary>Returns all issues of the given type and the given project filtered by the given JQL query</summary>
         [Obsolete("This method is no longer supported and might be removed in a later release. Use EnumerateIssuesByQuery(jqlQuery, fields, startIndex).ToArray() instead")]

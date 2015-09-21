@@ -135,6 +135,11 @@ namespace TechTalk.JiraRestClient
             }
         }
 
+        public IQueryable<Issue<TIssueFields>> QueryIssues()
+        {
+            return new QueryableIssueCollection<TIssueFields>(this);
+        }
+
 
         public Issue<TIssueFields> LoadIssue(IssueRef issueRef)
         {
