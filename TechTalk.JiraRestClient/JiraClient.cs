@@ -22,7 +22,7 @@ namespace TechTalk.JiraRestClient
         {
             this.username = username;
             this.password = password;
-            
+
             baseApiUrl = new Uri(new Uri(baseUrl), "rest/api/2/").ToString();
             deserializer = new JsonDeserializer();
         }
@@ -59,48 +59,65 @@ namespace TechTalk.JiraRestClient
             return EnumerateIssues(projectKey, issueType).ToArray();
         }
 
-        public IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(string projectKey, string issueType, string jqlQuery)
-        {
-            return EnumerateIssuesInternal(projectKey, issueType, jqlQuery);
-        }
-
         public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey)
         {
-            return EnumerateIssues(projectKey, null, null);
+            return EnumerateIssuesByQuery(CreateCommonJql(projectKey, null), null, 0);
         }
 
         public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey, String issueType)
         {
-            return EnumerateIssues(projectKey, issueType, null);
+            return EnumerateIssuesByQuery(CreateCommonJql(projectKey, issueType), null, 0);
         }
 
+        private static string CreateCommonJql(String projectKey, String issueType)
+        {
+            var queryParts = new List<String>();
+            if (!String.IsNullOrEmpty(projectKey))
+                queryParts.Add(String.Format("project={0}", projectKey));
+            if (!String.IsNullOrEmpty(issueType))
+                queryParts.Add(String.Format("issueType={0}", issueType));
+            return String.Join(" AND ", queryParts);
+        }
+
+        [Obsolete("This method is no longer supported and might be removed in a later release. Use EnumerateIssuesByQuery(jqlQuery, fields, startIndex).ToArray() instead")]
+        public IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(String projectKey, String issueType, String jqlQuery)
+        {
+            var jql = CreateCommonJql(projectKey, issueType);
+            if (!String.IsNullOrEmpty(jql) && !String.IsNullOrEmpty(jqlQuery))
+                jql += "+AND+";// if neither are empty, join them with an 'and'
+            return EnumerateIssuesByQuery(CreateCommonJql(projectKey, issueType), null, 0).ToArray();
+        }
+
+        [Obsolete("This method is no longer supported and might be removed in a later release. Use EnumerateIssuesByQuery(jqlQuery, fields, startIndex) instead")]
         public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey, String issueType, String fields)
+        {
+            var fieldDef = fields == null ? null
+                : fields.Split(',').Select(str => (str ?? "").Trim())
+                    .Where(str => !string.IsNullOrEmpty(str)).ToArray();
+            return EnumerateIssuesByQuery(CreateCommonJql(projectKey, issueType), fieldDef, 0);
+        }
+
+        public IEnumerable<Issue<TIssueFields>> EnumerateIssuesByQuery(String jqlQuery, String[] fields, Int32 startIndex)
         {
             try
             {
-                return EnumerateIssuesInternal(projectKey, issueType, fields);
+                return EnumerateIssuesByQueryInternal(Uri.EscapeUriString(jqlQuery), fields, startIndex);
             }
             catch (Exception ex)
             {
-                Trace.TraceError("EnumerateIssues(projectKey, issueType) error: {0}", ex);
+                Trace.TraceError("EnumerateIssuesByQuery(jqlQuery, fields, startIndex) error: {0}", ex);
                 throw new JiraClientException("Could not load issues", ex);
             }
         }
 
-        private IEnumerable<Issue<TIssueFields>> EnumerateIssuesInternal(String projectKey, String issueType, String fields = null, String jqlQuery = null)
+        private IEnumerable<Issue<TIssueFields>> EnumerateIssuesByQueryInternal(String jqlQuery, String[] fields, Int32 startIndex)
         {
             var queryCount = 50;
-            var resultCount = 0;
+            var resultCount = startIndex;
             while (true)
             {
-                var jql = String.Format("project={0}", Uri.EscapeUriString(projectKey));
-                if (!String.IsNullOrEmpty(issueType))
-                    jql += String.Format("+AND+issueType={0}", Uri.EscapeUriString(issueType));
-                if (!String.IsNullOrEmpty(jqlQuery))
-                    jql += String.Format("+AND+{0}", Uri.EscapeUriString(jqlQuery));
-                var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
-                if (!String.IsNullOrEmpty(fields))
-                    path += String.Format("&fields={0}", fields);
+                var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jqlQuery, resultCount, queryCount);
+                if (fields != null) path += String.Format("&fields={0}", String.Join(",", fields));
 
                 var request = CreateRequest(Method.GET, path);
 
@@ -117,6 +134,7 @@ namespace TechTalk.JiraRestClient
                 else /* all issues received */ break;
             }
         }
+
 
         public Issue<TIssueFields> LoadIssue(IssueRef issueRef)
         {

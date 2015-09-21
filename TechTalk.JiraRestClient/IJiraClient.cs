@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace TechTalk.JiraRestClient
 {
@@ -10,13 +11,18 @@ namespace TechTalk.JiraRestClient
         IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey);
         /// <summary>Returns all issues of the specified type for the given project</summary>
         IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey, String issueType);
-        /// <summary>Returns all issues of the given type and the given project filtered by the given JQL query</summary>
-        IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(String projectKey, String issueType, String jqlQuery);
         /// <summary>Enumerates through all issues for the given project</summary>
         IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey);
         /// <summary>Enumerates through all issues of the specified type for the given project</summary>
         IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey, String issueType);
+        /// <summary>Enumerates through all issues filtered by the specified jqlQuery starting form the specified startIndex</summary>
+        IEnumerable<Issue<TIssueFields>> EnumerateIssuesByQuery(String jqlQuery, String[] fields, Int32 startIndex);
+
+        /// <summary>Returns all issues of the given type and the given project filtered by the given JQL query</summary>
+        [Obsolete("This method is no longer supported and might be removed in a later release. Use EnumerateIssuesByQuery(jqlQuery, fields, startIndex).ToArray() instead")]
+        IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(String projectKey, String issueType, String jqlQuery);
         /// <summary>Enumerates through all issues of the specified type for the given project, returning the given issue fields</summary>
+        [Obsolete("This method is no longer supported and might be removed in a later release. Use EnumerateIssuesByQuery(jqlQuery, fields, startIndex) instead")]
         IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey, String issueType, String fields);
 
         /// <summary>Returns the issue identified by the given ref</summary>
