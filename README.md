@@ -7,8 +7,9 @@ Available on NuGet as [TechTalk.JiraRestClient](http://nuget.org/packages/TechTa
 
 ## Capabilities
 1. List or enumerate issues of a project
-2. Create, load and delete issues
-3. Update some issue fields
++ Get queryable issue collection
++ Create, load and delete issues
++ Update some issue fields
     - summary
     - description
     - labels
@@ -64,6 +65,7 @@ support for querying issue types and server info
 ability to enumerate through issues of a project
  
 **2.4.0**
+various small changes:
 
 - made the JiraClient thread safe
 - JQL exposed to the client interface via the `GetIssuesByQuery` method
@@ -76,3 +78,10 @@ use internal property JiraIdentifier on CreateAttachment
 
 **2.5.0**
 ability to specify the list of fields returned by the `EnumerateIssues` method
+
+**2.6.0**
+added IQueryable support:
+
+ - new `EnumerateIssuesByQuery(jqlQuery, fields, startIndex)` method
+ - marked some methods Obsolete, favoring the newly added method
+ - initial version of queryable issue collection (see submodule)
