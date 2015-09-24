@@ -30,5 +30,17 @@ namespace TechTalk.JiraRestClient
         public List<Comment> comments { get; set; }
         public List<IssueLink> issuelinks { get; set; }
         public List<Attachment> attachment { get; set; }
+
+        /// <summary>remaining time estimate in seconds</summary>
+        public int? timeestimate { get; set; }
+        /// <summary>original time estimate in seconds</summary>
+        public int? timeoriginalestimate { get; set; }
+        /// <summary>time logged in seconds</summary>
+        public int? timespent { get; set; }
+
+        public Resolution resolution { get; set; }
+        public DateTime? resolutiondate { get; set; }
+
+        public Priority priority { get; set; }
     }
 }
