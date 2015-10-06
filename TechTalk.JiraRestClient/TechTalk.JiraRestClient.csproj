@@ -44,7 +44,9 @@
     <Compile Include="Comment.cs" />
     <Compile Include="CommentsContainer.cs" />
     <Compile Include="Compatibility.cs" />
+    <Compile Include="FieldAttribute.cs" />
     <Compile Include="IssueType.cs" />
+    <Compile Include="NamedProperty.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="WatchersContainer.cs" />
     <Compile Include="IJiraClient.cs" />
