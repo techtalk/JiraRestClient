@@ -320,8 +320,31 @@ namespace TechTalk.JiraRestClient
             }
         }
 
+		public List<JiraUser> FindUsers(string search)
+		{
+			try
+			{
+				var path = String.Format("user/search?username={0}", search);
+				var request = CreateRequest(Method.GET, path);
+				var response = ExecuteRequest(request);
+				AssertStatus(response, HttpStatusCode.OK);
 
-        public IEnumerable<JiraUser> GetWatchers(IssueRef issue)
+				var result = deserializer.Deserialize<List<JiraUser>>(response);
+				return result;
+			}
+			catch (Exception ex)
+			{
+				Trace.TraceError("FindUsers(issue) error: {0}", ex);
+				throw new JiraClientException( String.Format("Could find user {0}. {1}",search,ex));
+			}
+		}
+		
+		public JiraUser FindUser(string search)
+		{
+			return FindUsers(search).FirstOrDefault();
+		}
+
+		public IEnumerable<JiraUser> GetWatchers(IssueRef issue)
         {
             try
             {
