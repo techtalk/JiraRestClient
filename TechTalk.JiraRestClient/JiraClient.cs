@@ -277,7 +277,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/transitions?expand=transitions.fields", issue.id);
+                var path = String.Format("issue/{0}/transitions?expand=transitions.fields", issue.JiraIdentifier);
                 var request = CreateRequest(Method.GET, path);
 
                 var response = ExecuteRequest(request);
@@ -634,6 +634,27 @@ namespace TechTalk.JiraRestClient
             {
                 Trace.TraceError("GetIssueTypes() error: {0}", ex);
                 throw new JiraClientException("Could not load issue types", ex);
+            }
+        }
+
+        public IEnumerable<Status> GetIssueStatuses()
+        {
+            try
+            {
+                var request = CreateRequest(Method.GET, "status");
+                request.AddHeader("ContentType", "application/json");
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<List<Status>>(response);
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetIssueStatuses() error: {0}", ex);
+                throw new JiraClientException("Could not load issue statuses", ex);
             }
         }
 
