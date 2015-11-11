@@ -616,7 +616,8 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public IEnumerable<IssueType> GetIssueTypes()
+        //public IEnumerable<IssueType> GetIssueTypes()
+        public IEnumerable<T> GetIssueTypes<T>() where T : IssueType
         {
             try
             {
@@ -626,7 +627,7 @@ namespace TechTalk.JiraRestClient
                 var response = ExecuteRequest(request);
                 AssertStatus(response, HttpStatusCode.OK);
 
-                var data = deserializer.Deserialize<List<IssueType>>(response);
+                var data = deserializer.Deserialize<List<T>>(response);
                 return data;
 
             }
@@ -637,7 +638,7 @@ namespace TechTalk.JiraRestClient
             }
         }
 
-        public IEnumerable<Status> GetIssueStatuses()
+        public IEnumerable<T> GetIssueStatuses<T>() where T:Status
         {
             try
             {
@@ -647,7 +648,7 @@ namespace TechTalk.JiraRestClient
                 var response = ExecuteRequest(request);
                 AssertStatus(response, HttpStatusCode.OK);
 
-                var data = deserializer.Deserialize<List<Status>>(response);
+                var data = deserializer.Deserialize<List<T>>(response);
                 return data;
 
             }

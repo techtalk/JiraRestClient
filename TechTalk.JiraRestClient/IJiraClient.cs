@@ -81,10 +81,10 @@ namespace TechTalk.JiraRestClient
         void DeleteRemoteLink(IssueRef issue, RemoteLink remoteLink);
 
         /// <summary>Returns all issue types</summary>
-        IEnumerable<IssueType> GetIssueTypes();
+        IEnumerable<T> GetIssueTypes<T>() where T : IssueType;
 
         /// <summary>Returns all issue statuses</summary>
-        IEnumerable<Status> GetIssueStatuses();
+        IEnumerable<T> GetIssueStatuses<T>() where T : Status;
 
         /// <summary>Returns information about the JIRA server</summary>
         ServerInfo GetServerInfo();
