@@ -86,6 +86,9 @@ namespace TechTalk.JiraRestClient
         /// <summary>Returns all issue statuses</summary>
         IEnumerable<T> GetIssueStatuses<T>() where T : Status;
 
+        /// <summary>Returns all issue priorities</summary>
+        IEnumerable<T> GetIssuePriorities<T>() where T : IssuePriority;
+
         /// <summary>Returns information about the JIRA server</summary>
         ServerInfo GetServerInfo();
     }
