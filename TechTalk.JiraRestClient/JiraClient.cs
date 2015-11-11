@@ -659,6 +659,27 @@ namespace TechTalk.JiraRestClient
             }
         }
 
+        public IEnumerable<T> GetIssuePriorities<T>() where T : IssuePriority
+        {
+            try
+            {
+                var request = CreateRequest(Method.GET, "priority");
+                request.AddHeader("ContentType", "application/json");
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<List<T>>(response);
+                return data;
+
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetIssuePriorities() error: {0}", ex);
+                throw new JiraClientException("Could not load issue priorities", ex);
+            }
+        }
+
         public ServerInfo GetServerInfo()
         {
             try
