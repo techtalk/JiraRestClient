@@ -340,6 +340,25 @@ namespace TechTalk.JiraRestClient
             }
         }
 
+        public List<T> GetProjects<T>() where T: JiraProject
+        {
+            try
+            {
+                var path = "project";
+                var request = CreateRequest(Method.GET, path);
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                return deserializer.Deserialize<List<T>>(response);
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetProjects() error: {0}", ex);
+                throw new JiraClientException("Could not load projects", ex);
+            }
+
+        } 
         
         public List<T> FindUsers<T>(string search) where T : JiraUser
 		{
