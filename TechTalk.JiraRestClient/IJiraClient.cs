@@ -48,6 +48,10 @@ namespace TechTalk.JiraRestClient
         /// <summary>Returns all watchers for the given issue</summary>
         IEnumerable<JiraUser> GetWatchers(IssueRef issue);
 
+        List<T> FindUsers<T>(string search) where T : JiraUser;
+        T FindUser<T>(string search) where T : JiraUser;
+
+
         /// <summary>Returns all comments for the given issue</summary>
         IEnumerable<Comment> GetComments(IssueRef issue);
         /// <summary>Adds a comment to the given issue</summary>
