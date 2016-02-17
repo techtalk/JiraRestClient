@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Messaging;
 
 namespace TechTalk.JiraRestClient
 {
@@ -10,6 +11,9 @@ namespace TechTalk.JiraRestClient
             status = new Status();
             timetracking = new Timetracking();
 
+            project = new Project();
+            issuetype = new IssueType();
+
             labels = new List<String>();
             comments = new List<Comment>();
             issuelinks = new List<IssueLink>();
@@ -19,6 +23,8 @@ namespace TechTalk.JiraRestClient
 
         public String summary { get; set; }
         public String description { get; set; }
+        public Project project { get; set; }
+        public IssueType issuetype { get; set; }
         public Timetracking timetracking { get; set; }
         public Status status { get; set; }
 

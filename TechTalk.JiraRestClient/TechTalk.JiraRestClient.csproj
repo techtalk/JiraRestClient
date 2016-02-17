@@ -41,9 +41,13 @@
       <Link>QueryableIssueCollection.cs</Link>
     </Compile>
     <Compile Include="Attachment.cs" />
+    <Compile Include="Project.cs" />
     <Compile Include="Comment.cs" />
     <Compile Include="CommentsContainer.cs" />
     <Compile Include="Compatibility.cs" />
+    <Compile Include="Utils\TimeUtils.cs" />
+    <Compile Include="Worklog.cs" />
+    <Compile Include="WorklogUpdated.cs" />
     <Compile Include="IssueType.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="WatchersContainer.cs" />
