@@ -7,6 +7,9 @@ namespace TechTalk.JiraRestClient
 {
     public interface IJiraClient
     {
+        /// <summary>Returns a list of projects</summary>
+        IEnumerable<Project> GetProjects();
+
         /// <summary>Returns all issues for the given project</summary>
         IEnumerable<Issue> GetIssues(String projectKey);
         /// <summary>Returns all issues of the specified type for the given project</summary>
@@ -76,6 +79,11 @@ namespace TechTalk.JiraRestClient
         /// <summary>Removes the given remote link (attached url) of the specified issue</summary>
         void DeleteRemoteLink(IssueRef issue, RemoteLink remoteLink);
 
+        /// <summary>Returns worklogs id and update time of worklogs that was updated since given time.</summary>
+        WorklogUpdated GetWorklogUpdated(DateTime since);
+        /// <summary>Returns worklogs for given worklog ids</summary>
+        IEnumerable<Worklog> GetWorklogList(int[] ids);
+
         /// <summary>Returns all issue types</summary>
         IEnumerable<IssueType> GetIssueTypes();
 
@@ -89,6 +97,11 @@ namespace TechTalk.JiraRestClient
         public JiraClient(string baseUrl, string username, string password)
         {
             client = new JiraClient<IssueFields>(baseUrl, username, password);
+        }
+
+        public IEnumerable<Project> GetProjects()
+        {
+            return client.GetProjects();
         }
 
         public IEnumerable<Issue> GetIssues(String projectKey)
@@ -236,6 +249,16 @@ namespace TechTalk.JiraRestClient
         public void DeleteRemoteLink(IssueRef issue, RemoteLink remoteLink)
         {
             client.DeleteRemoteLink(issue, remoteLink);
+        }
+
+        public WorklogUpdated GetWorklogUpdated(DateTime since)
+        {
+            return client.GetWorklogUpdated(since);
+        }
+
+        public IEnumerable<Worklog> GetWorklogList(int[] ids)
+        {
+            return client.GetWorklogList(ids);
         }
 
         public IEnumerable<IssueType> GetIssueTypes()

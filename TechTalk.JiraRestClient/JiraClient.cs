@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using RestSharp;
 using RestSharp.Deserializers;
+using TechTalk.JiraRestClient.Utils;
 
 namespace TechTalk.JiraRestClient
 {
@@ -48,6 +49,26 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("JIRA returned wrong status: " + response.StatusDescription, response.Content);
         }
 
+
+        public IEnumerable<Project> GetProjects()
+        {
+            try
+            {
+                var request = CreateRequest(Method.GET, "project");
+                request.AddHeader("ContentType", "application/json");
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<List<Project>>(response);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetProjects() error: {0}", ex);
+                throw new JiraClientException("Could not load projects", ex);
+            }
+        }
 
         public IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey)
         {
@@ -613,6 +634,49 @@ namespace TechTalk.JiraRestClient
             {
                 Trace.TraceError("DeleteRemoteLink(issue, remoteLink) error: {0}", ex);
                 throw new JiraClientException("Could not delete external link for issue", ex);
+            }
+        }
+
+        public WorklogUpdated GetWorklogUpdated(DateTime since)
+        {
+            try
+            {
+                var unixSince = TimeUtils.ToUnixTime(since);
+                var path = string.Format("worklog/updated?since={0}", unixSince);
+                var request = CreateRequest(Method.GET, path);
+                request.AddHeader("ContentType", "application/json");
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<WorklogUpdated>(response);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetWorklogUpdated() error: {0}", ex);
+                throw new JiraClientException("Could not load worklog updated", ex);
+            }
+        }
+
+        public IEnumerable<Worklog> GetWorklogList(int[] ids)
+        {
+            try
+            {
+                var request = CreateRequest(Method.POST, "worklog/list");
+                request.AddHeader("ContentType", "application/json");
+                request.AddBody(new { ids = ids });
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<List<Worklog>>(response);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetWorklogList() error: {0}", ex);
+                throw new JiraClientException("Could not load worklog list", ex);
             }
         }
 
