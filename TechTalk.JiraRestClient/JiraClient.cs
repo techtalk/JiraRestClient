@@ -189,7 +189,7 @@ namespace TechTalk.JiraRestClient
                     issueData.Add("summary", issueFields.summary);
                 if (issueFields.description != null)
                     issueData.Add("description", issueFields.description);
-                if (issueFields.labels != null)
+                if (issueFields.labels != null && issueFields.labels.Count > 0)
                     issueData.Add("labels", issueFields.labels);
                 if (issueFields.timetracking != null)
                     issueData.Add("timetracking", new { originalEstimate = issueFields.timetracking.originalEstimate });
