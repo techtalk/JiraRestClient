@@ -92,7 +92,7 @@ namespace TechTalk.JiraRestClient
                 if (!String.IsNullOrEmpty(issueType))
                     jql += String.Format("+AND+issueType={0}", Uri.EscapeUriString(issueType));
                 if (!String.IsNullOrEmpty(jqlQuery))
-                    jql += String.Format("+AND+{0}", Uri.EscapeUriString(jqlQuery).Replace("&", "%26");
+                    jql += String.Format("+AND+{0}", Uri.EscapeUriString(jqlQuery).Replace("&", "%26"));
                 var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
                 var request = CreateRequest(Method.GET, path);
 
