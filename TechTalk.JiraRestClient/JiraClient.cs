@@ -16,15 +16,21 @@ namespace TechTalk.JiraRestClient
     {
         private readonly string username;
         private readonly string password;
-        private readonly JsonDeserializer deserializer;
+        private readonly IDeserializer deserializer;
         private readonly string baseApiUrl;
+        
         public JiraClient(string baseUrl, string username, string password)
+            : this(baseUrl, username, password, new JsonDeserializer())
+        {
+        }
+        
+        public JiraClient(string baseUrl, string username, string password, IDeserializer deserializer)
         {
             this.username = username;
             this.password = password;
 
             baseApiUrl = new Uri(new Uri(baseUrl), "rest/api/2/").ToString();
-            deserializer = new JsonDeserializer();
+            this.deserializer = deserializer;
         }
 
         private RestRequest CreateRequest(Method method, String path)
