@@ -44,7 +44,10 @@
     <Compile Include="Comment.cs" />
     <Compile Include="CommentsContainer.cs" />
     <Compile Include="Compatibility.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="IssueType.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="ProjectCategory.cs" />
     <Compile Include="ServerInfo.cs" />
     <Compile Include="WatchersContainer.cs" />
     <Compile Include="IJiraClient.cs" />
