@@ -176,12 +176,24 @@ namespace TechTalk.JiraRestClient
 
         public Issue<TIssueFields> CreateIssue(String projectKey, String issueType, TIssueFields issueFields)
         {
+            return CreateIssue(projectKey, issueType, issueFields, null);
+        }
+
+        public Issue<TIssueFields> CreateIssue(String projectKey, String issueType, TIssueFields issueFields, Dictionary<string, object> customFields)
+        {
             try
             {
                 var request = CreateRequest(Method.POST, "issue");
                 request.AddHeader("ContentType", "application/json");
 
                 var issueData = new Dictionary<string, object>();
+
+                if(customFields != null)
+                {
+                    foreach(var customField in customFields)
+                        issueData.Add(customField.Key, customField.Value);
+                }
+
                 issueData.Add("project", new { key = projectKey });
                 issueData.Add("issuetype", new { name = issueType });
 
@@ -218,6 +230,11 @@ namespace TechTalk.JiraRestClient
 
         public Issue<TIssueFields> UpdateIssue(Issue<TIssueFields> issue)
         {
+            return UpdateIssue(issue, null);
+        }
+
+        public Issue<TIssueFields> UpdateIssue(Issue<TIssueFields> issue, Dictionary<string, object> customFields)
+        {
             try
             {
                 var path = String.Format("issue/{0}", issue.JiraIdentifier);
@@ -225,6 +242,13 @@ namespace TechTalk.JiraRestClient
                 request.AddHeader("ContentType", "application/json");
 
                 var updateData = new Dictionary<string, object>();
+
+                if (customFields != null)
+                {
+                    foreach (var customField in customFields)
+                        updateData.Add(customField.Key, new[] { new { set = customField.Value } });
+                }
+
                 if (issue.fields.summary != null)
                     updateData.Add("summary", new[] { new { set = issue.fields.summary } });
                 if (issue.fields.description != null)
