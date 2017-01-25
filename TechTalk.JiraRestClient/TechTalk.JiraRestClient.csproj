@@ -63,6 +63,7 @@
     <Compile Include="Transition.cs" />
     <Compile Include="Timetracking.cs" />
     <Compile Include="TransitionsContainer.cs" />
+    <Compile Include="Webhook.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
