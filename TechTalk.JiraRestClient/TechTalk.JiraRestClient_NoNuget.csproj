@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{210529FA-454E-4C32-A2C8-353ECBD4DA05}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TechTalk.JiraRestClient</RootNamespace>
+    <AssemblyName>TechTalk.JiraRestClient</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="RestSharp">
+      <HintPath>..\..\packages\RestSharp.104.1\lib\net4-client\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attachment.cs" />
+    <Compile Include="Comment.cs" />
+    <Compile Include="CommentsContainer.cs" />
+    <Compile Include="Compatibility.cs" />
+    <Compile Include="FieldAttribute.cs" />
+    <Compile Include="IssueType.cs" />
+    <Compile Include="NamedProperty.cs" />
+    <Compile Include="ServerInfo.cs" />
+    <Compile Include="WatchersContainer.cs" />
+    <Compile Include="IJiraClient.cs" />
+    <Compile Include="Issue.cs" />
+    <Compile Include="IssueContainer.cs" />
+    <Compile Include="IssueFields.cs" />
+    <Compile Include="IssueLink.cs" />
+    <Compile Include="IssueRef.cs" />
+    <Compile Include="JiraClient.cs" />
+    <Compile Include="JiraClientException.cs" />
+    <Compile Include="JiraUser.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteLink.cs" />
+    <Compile Include="RemoteLinkResult.cs" />
+    <Compile Include="Status.cs" />
+    <Compile Include="Transition.cs" />
+    <Compile Include="Timetracking.cs" />
+    <Compile Include="TransitionsContainer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
