@@ -8,6 +8,7 @@ using System.Text;
 using RestSharp;
 using RestSharp.Deserializers;
 using RestSharp.Extensions;
+using static System.String;
 
 namespace TechTalk.JiraRestClient
 {
@@ -31,7 +32,7 @@ namespace TechTalk.JiraRestClient
         private RestRequest CreateRequest(Method method, String path)
         {
             var request = new RestRequest { Method = method, Resource = path, RequestFormat = DataFormat.Json };
-            request.AddHeader("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(String.Format("{0}:{1}", username, password))));
+            request.AddHeader("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(Format("{0}:{1}", username, password))));
             return request;
         }
 
@@ -65,6 +66,46 @@ namespace TechTalk.JiraRestClient
             return EnumerateIssuesInternal(projectKey, issueType, jqlQuery);
         }
 
+        public IEnumerable<Issue<TIssueFields>> GetIssuesByQuery(string[] projectes, string issueType, string jqlQuery)
+        {
+            return EnumerateIssuesInternal(projectes, issueType, jqlQuery);
+        }
+
+        private IEnumerable<Issue<TIssueFields>> EnumerateIssuesInternal(string[] projectes, string issueType, string jqlQuery)
+        {
+            {
+                var queryCount = 50;
+                var resultCount = 0;
+                while (true)
+                {
+                    var projectsClause = string.Join("%2C+", projectes.Select(p => $"%22{Uri.EscapeUriString(p)}%22"));
+                    var jql = $"project+in+({projectsClause})";
+                    if (!IsNullOrEmpty(issueType))
+                        jql += $"+AND+issueType={Uri.EscapeUriString(issueType)}";
+                    if (!IsNullOrEmpty(jqlQuery))
+                        jql += $"+AND+{Uri.EscapeUriString(jqlQuery)}";
+                    var path = $"search?jql={jql}&startAt={resultCount}&maxResults={queryCount}";
+                    var request = CreateRequest(Method.GET, path);
+
+                    var response = ExecuteRequest(request);
+                    AssertStatus(response, HttpStatusCode.OK);
+
+                    var data = deserializer.Deserialize<IssueContainer<TIssueFields>>(response);
+                    var issues = data.issues?.ToArray() ?? Enumerable.Empty<Issue<TIssueFields>>().ToArray();
+
+                    foreach (var item in issues)
+                    {
+                        yield return item;
+                    }
+
+                    resultCount += issues.Length;
+
+                    if (resultCount < data.total) continue;
+                    else /* all issues received */ break;
+                }
+            }
+        }
+
         public IEnumerable<Issue<TIssueFields>> EnumerateIssues(String projectKey)
         {
             return EnumerateIssues(projectKey, null);
@@ -89,12 +130,12 @@ namespace TechTalk.JiraRestClient
             var resultCount = 0;
             while (true)
             {
-                var jql = String.Format("project={0}", Uri.EscapeUriString(projectKey));
-                if (!String.IsNullOrEmpty(issueType))
-                    jql += String.Format("+AND+issueType={0}", Uri.EscapeUriString(issueType));
-                if (!String.IsNullOrEmpty(jqlQuery))
-                    jql += String.Format("+AND+{0}", Uri.EscapeUriString(jqlQuery));
-                var path = String.Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
+                var jql = Format("project={0}", Uri.EscapeUriString(projectKey));
+                if (!IsNullOrEmpty(issueType))
+                    jql += Format("+AND+issueType={0}", Uri.EscapeUriString(issueType));
+                if (!IsNullOrEmpty(jqlQuery))
+                    jql += Format("+AND+{0}", Uri.EscapeUriString(jqlQuery));
+                var path = Format("search?jql={0}&startAt={1}&maxResults={2}", jql, resultCount, queryCount);
                 var request = CreateRequest(Method.GET, path);
 
                 var response = ExecuteRequest(request);
@@ -120,7 +161,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}", issueRef);
+                var path = Format("issue/{0}", issueRef);
                 var request = CreateRequest(Method.GET, path);
 
                 var response = ExecuteRequest(request);
@@ -201,7 +242,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}", issue.JiraIdentifier);
+                var path = Format("issue/{0}", issue.JiraIdentifier);
                 var request = CreateRequest(Method.PUT, path);
                 request.AddHeader("ContentType", "application/json");
 
@@ -240,7 +281,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}?deleteSubtasks=true", issue.id);
+                var path = Format("issue/{0}?deleteSubtasks=true", issue.id);
                 var request = CreateRequest(Method.DELETE, path);
 
                 var response = ExecuteRequest(request);
@@ -258,7 +299,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/transitions?expand=transitions.fields", issue.id);
+                var path = Format("issue/{0}/transitions?expand=transitions.fields", issue.id);
                 var request = CreateRequest(Method.GET, path);
 
                 var response = ExecuteRequest(request);
@@ -278,7 +319,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/transitions", issue.id);
+                var path = Format("issue/{0}/transitions", issue.id);
                 var request = CreateRequest(Method.POST, path);
                 request.AddHeader("ContentType", "application/json");
 
@@ -306,7 +347,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/watchers", issue.id);
+                var path = Format("issue/{0}/watchers", issue.id);
                 var request = CreateRequest(Method.GET, path);
 
                 var response = ExecuteRequest(request);
@@ -326,7 +367,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/comment", issue.id);
+                var path = Format("issue/{0}/comment", issue.id);
                 var request = CreateRequest(Method.GET, path);
 
                 var response = ExecuteRequest(request);
@@ -346,7 +387,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/comment", issue.id);
+                var path = Format("issue/{0}/comment", issue.id);
                 var request = CreateRequest(Method.POST, path);
                 request.AddHeader("ContentType", "application/json");
                 request.AddBody(new Comment { body = comment });
@@ -367,7 +408,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/comment/{1}", issue.id, comment.id);
+                var path = Format("issue/{0}/comment/{1}", issue.id, comment.id);
                 var request = CreateRequest(Method.DELETE, path);
 
                 var response = ExecuteRequest(request);
@@ -390,7 +431,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issue/{0}/attachments", issue.id);
+                var path = Format("issue/{0}/attachments", issue.id);
                 var request = CreateRequest(Method.POST, path);
                 request.AddHeader("X-Atlassian-Token", "nocheck");
                 request.AddHeader("ContentType", "multipart/form-data");
@@ -412,7 +453,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("attachment/{0}", attachment.id);
+                var path = Format("attachment/{0}", attachment.id);
                 var request = CreateRequest(Method.DELETE, path);
 
                 var response = ExecuteRequest(request);
@@ -482,7 +523,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = String.Format("issueLink/{0}", link.id);
+                var path = Format("issueLink/{0}", link.id);
                 var request = CreateRequest(Method.DELETE, path);
 
                 var response = ExecuteRequest(request);
@@ -500,7 +541,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = string.Format("issue/{0}/remotelink", issue.id);
+                var path = Format("issue/{0}/remotelink", issue.id);
                 var request = CreateRequest(Method.GET, path);
                 request.AddHeader("ContentType", "application/json");
 
@@ -521,7 +562,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = string.Format("issue/{0}/remotelink", issue.id);
+                var path = Format("issue/{0}/remotelink", issue.id);
                 var request = CreateRequest(Method.POST, path);
                 request.AddHeader("ContentType", "application/json");
                 request.AddBody(new
@@ -557,7 +598,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = string.Format("issue/{0}/remotelink/{1}", issue.id, remoteLink.id);
+                var path = Format("issue/{0}/remotelink/{1}", issue.id, remoteLink.id);
                 var request = CreateRequest(Method.PUT, path);
                 request.AddHeader("ContentType", "application/json");
 
@@ -583,7 +624,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var path = string.Format("issue/{0}/remotelink/{1}", issue.id, remoteLink.id);
+                var path = Format("issue/{0}/remotelink/{1}", issue.id, remoteLink.id);
                 var request = CreateRequest(Method.DELETE, path);
                 request.AddHeader("ContentType", "application/json");
 
