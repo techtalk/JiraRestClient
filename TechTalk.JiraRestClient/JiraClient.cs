@@ -31,8 +31,10 @@ namespace TechTalk.JiraRestClient
 
         private RestRequest CreateRequest(Method method, String path)
         {
-            var request = new RestRequest { Method = method, Resource = path, RequestFormat = DataFormat.Json };
-            request.AddHeader("Authorization", "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(Format("{0}:{1}", username, password))));
+            var request = new RestRequest { Method = method, Resource = path };
+            var encodedLogin = Encoding.ASCII.GetBytes($"{username}:{password}");
+            var base64String = Convert.ToBase64String(encodedLogin);
+            request.AddHeader("Authorization", $"Basic {base64String}");
             return request;
         }
 
