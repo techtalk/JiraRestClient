@@ -45,6 +45,12 @@ namespace TechTalk.JiraRestClient
         /// <summary>Changes the state of the given issue as described by the transition</summary>
         Issue<TIssueFields> TransitionIssue(IssueRef issue, Transition transition);
 
+        /// <summary>Returns worklogs for given worklog ids</summary>
+        IEnumerable<Worklog> GetWorklogList(int[] ids);
+
+        /// <summary>Returns worklogs by issue id</summary>
+        IEnumerable<Worklog> GetWorklogsByIssueId(int id);
+
         /// <summary>Returns all watchers for the given issue</summary>
         IEnumerable<JiraUser> GetWatchers(IssueRef issue);
 

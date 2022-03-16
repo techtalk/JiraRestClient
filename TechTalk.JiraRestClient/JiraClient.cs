@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using TechTalk.JiraRestClient.Utils;
 using RestSharp;
 using RestSharp.Deserializers;
 
@@ -48,6 +49,51 @@ namespace TechTalk.JiraRestClient
                 throw new JiraClientException("JIRA returned wrong status: " + response.StatusDescription, response.Content);
         }
 
+        /// <summary>
+        /// Get Worklog List by worklog's id
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        public IEnumerable<Worklog> GetWorklogList(int[] ids)
+        {
+            try
+            {
+                var request = CreateRequest(Method.POST, "worklog/list");
+                request.AddHeader("ContentType", "application/json");
+                request.AddBody(new { ids = ids });
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<List<Worklog>>(response);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetWorklogList() error: {0}", ex);
+                throw new JiraClientException("Could not load worklog list", ex);
+            }
+        }
+
+        public IEnumerable<Worklog> GetWorklogsByIssueId(int id)
+        {
+            try
+            {
+                var request = CreateRequest(Method.POST, $"/{id}/worklog");
+                request.AddHeader("ContentType", "application/json");
+
+                var response = ExecuteRequest(request);
+                AssertStatus(response, HttpStatusCode.OK);
+
+                var data = deserializer.Deserialize<List<Worklog>>(response);
+                return data;
+            }
+            catch (Exception ex)
+            {
+                Trace.TraceError("GetWorklogsByIssueId() error: {0}", ex);
+                throw new JiraClientException("Could not load worklog list of issue", ex);
+            }
+        }
 
         public IEnumerable<Issue<TIssueFields>> GetIssues(String projectKey)
         {
