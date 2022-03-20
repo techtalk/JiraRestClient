@@ -198,6 +198,16 @@ namespace TechTalk.JiraRestClient
             client.DeleteAttachment(attachment);
         }
 
+        public IEnumerable<Worklog> GetWorklogList(int[] ids)
+        {
+            return client.GetWorklogList(ids);
+        }
+
+        public IEnumerable<Worklog> GetWorklogsByIssueId(int id)
+        {
+            return client.GetWorklogsByIssueId(id);
+        }
+
         public IEnumerable<IssueLink> GetIssueLinks(IssueRef issue)
         {
             return client.GetIssueLinks(issue);
