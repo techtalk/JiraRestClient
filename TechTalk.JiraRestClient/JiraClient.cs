@@ -58,7 +58,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var request = CreateRequest(Method.POST, "worklog/list");
+                var request = CreateRequest(Method.GET, "worklog/list");
                 request.AddHeader("ContentType", "application/json");
                 request.AddBody(new { ids = ids });
 
@@ -79,7 +79,7 @@ namespace TechTalk.JiraRestClient
         {
             try
             {
-                var request = CreateRequest(Method.POST, $"/{id}/worklog");
+                var request = CreateRequest(Method.GET, $"/{id}/worklog");
                 request.AddHeader("ContentType", "application/json");
 
                 var response = ExecuteRequest(request);
